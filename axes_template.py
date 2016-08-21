@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 class axes_template():
     """This object defines the template that will be used for plotting"""
-    
+
     def __init__(self,size=None,matrix=None):
             if matrix:
                 # Check if the formating is correct
@@ -9,7 +9,7 @@ class axes_template():
                 self.ncol=len(matrix[0])
                 for col in matrix:
                     if len(col)!=self.ncol:
-                        print("The number of colums per row is not consistent")              
+                        print("The number of colums per row is not consistent")
                         break
                 self.matrix=matrix
                 if size is not None:
@@ -119,6 +119,8 @@ class axes_template():
 
         # Set the current figure
         plt.figure(figure.number)
+        for ax in figure.axes:
+            ax.remove()
 
         self.axes=dict()
 
@@ -129,6 +131,7 @@ class axes_template():
             columnspan=self.span[i][3]
             self.axes[i]=plt.subplot2grid((self.nrow,self.ncol),(row,column),
                                           rowspan=rowspan,colspan=columnspan)
+        figure.tight_layout()
         return self.axes
 
     def generate_preview(self):

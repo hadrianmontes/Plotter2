@@ -15,6 +15,14 @@ class Extended_Figure(plt.Figure):
         self.ncol=1
         self.nrow=1
 
+    def blank_figure(self):
+        # Creates a blank figure
+        self.define_template(matrix=[[1]])
+        ax=self.axes_dict[1]
+        ax.set_xticks([])
+        ax.set_yticks([])
+        self.tight_layout()
+
     def define_template(self,**kwargs):
         '''
         Defines the number of rows and colums
@@ -25,6 +33,9 @@ class Extended_Figure(plt.Figure):
         self.ncol=self.template.ncol
         self.nrow=self.template.nrow
         self.axes_dict=self.template.apply_template(self)
+        self.index_dict=dict()
+        for index in self.axes_dict:
+            self.index_dict[self.axes_dict[index]]=index
 
     def view_template(self):
         """
@@ -205,6 +216,7 @@ class Extended_Figure(plt.Figure):
                 y_ticks = axes.yaxis.get_major_ticks()
                 for tick in y_ticks:
                     tick.label1.set_visible(True)
+
 
 def read_file(filename,xcol=0,ycol=1):
     f=open(filename)
