@@ -23,7 +23,10 @@
     <item row="0" column="0" colspan="2">
      <layout class="QHBoxLayout" name="layout_1">
       <item>
-       <widget class="QPushButton" name="open">
+       <widget class="QToolButton" name="open">
+        <property name="focusPolicy">
+         <enum>Qt::TabFocus</enum>
+        </property>
         <property name="text">
          <string/>
         </property>
@@ -35,7 +38,10 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="save">
+       <widget class="QToolButton" name="save">
+        <property name="focusPolicy">
+         <enum>Qt::TabFocus</enum>
+        </property>
         <property name="text">
          <string/>
         </property>
@@ -118,6 +124,9 @@
           <width>16777215</width>
           <height>120</height>
          </size>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::NoFocus</enum>
         </property>
        </widget>
       </item>
@@ -299,28 +308,15 @@
               </property>
              </widget>
             </item>
-            <item row="1" column="0">
-             <widget class="QPlainTextEdit" name="file_path_box">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>16777215</width>
-                <height>30</height>
-               </size>
-              </property>
-             </widget>
-            </item>
             <item row="0" column="0">
              <widget class="QLabel" name="label_7">
               <property name="text">
                <string>Select the file from which the data wil be read:</string>
               </property>
              </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QLineEdit" name="file_path_box"/>
             </item>
            </layout>
           </item>
@@ -348,7 +344,11 @@
              </widget>
             </item>
             <item row="1" column="3">
-             <widget class="QSpinBox" name="y_column_index"/>
+             <widget class="QSpinBox" name="y_column_index">
+              <property name="value">
+               <number>1</number>
+              </property>
+             </widget>
             </item>
             <item row="0" column="0" colspan="4">
              <widget class="QLabel" name="label_8">
@@ -362,16 +362,26 @@ the x and y data should be read from:</string>
           </item>
           <item row="2" column="0">
            <layout class="QGridLayout" name="gridLayout_7">
+            <item row="2" column="2" alignment="Qt::AlignRight">
+             <widget class="QLabel" name="label_13">
+              <property name="text">
+               <string>Marker</string>
+              </property>
+             </widget>
+            </item>
             <item row="3" column="2" colspan="2" alignment="Qt::AlignRight">
-             <widget class="QCheckBox" name="checkBox">
+             <widget class="QCheckBox" name="bocDiffColor">
               <property name="text">
                <string>Use different 
 color for marker</string>
               </property>
+              <property name="tristate">
+               <bool>false</bool>
+              </property>
              </widget>
             </item>
             <item row="2" column="3">
-             <widget class="QComboBox" name="comboBox_2">
+             <widget class="QComboBox" name="comboMarker">
               <item>
                <property name="text">
                 <string>None</string>
@@ -390,7 +400,7 @@ color for marker</string>
              </widget>
             </item>
             <item row="2" column="1">
-             <widget class="QComboBox" name="comboBox">
+             <widget class="QComboBox" name="comboLinestyle">
               <property name="minimumSize">
                <size>
                 <width>130</width>
@@ -431,18 +441,16 @@ color for marker</string>
               </property>
              </widget>
             </item>
-            <item row="2" column="2" alignment="Qt::AlignRight">
-             <widget class="QLabel" name="label_13">
-              <property name="text">
-               <string>Marker</string>
-              </property>
-             </widget>
-            </item>
             <item row="3" column="1">
-             <widget class="QComboBox" name="comboBox_3">
+             <widget class="QComboBox" name="comboColor">
               <item>
                <property name="text">
                 <string>Auto</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Black</string>
                </property>
               </item>
               <item>
@@ -452,22 +460,7 @@ color for marker</string>
               </item>
               <item>
                <property name="text">
-                <string>Red</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>Yellow</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
                 <string>Cyan</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>Black</string>
                </property>
               </item>
               <item>
@@ -478,6 +471,16 @@ color for marker</string>
               <item>
                <property name="text">
                 <string>Pink</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Red</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Yellow</string>
                </property>
               </item>
              </widget>
@@ -493,6 +496,64 @@ color for marker</string>
              <widget class="QLabel" name="label_11">
               <property name="text">
                <string>Line and marker porperties:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="4" column="0">
+             <widget class="QLabel" name="label_15">
+              <property name="text">
+               <string>Marker Color</string>
+              </property>
+             </widget>
+            </item>
+            <item row="4" column="1">
+             <widget class="QComboBox" name="comboMarkerColor">
+              <item>
+               <property name="text">
+                <string>Auto</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Black</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Blue</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Cyan</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Green</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Red</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Pink</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Yellow</string>
+               </property>
+              </item>
+             </widget>
+            </item>
+            <item row="5" column="3">
+             <widget class="QPushButton" name="plot_but">
+              <property name="text">
+               <string>Plot</string>
               </property>
              </widget>
             </item>
@@ -583,6 +644,32 @@ color for marker</string>
    </property>
   </action>
  </widget>
+ <tabstops>
+  <tabstop>open</tabstop>
+  <tabstop>save</tabstop>
+  <tabstop>export_2</tabstop>
+  <tabstop>undo</tabstop>
+  <tabstop>redo</tabstop>
+  <tabstop>properties_tab</tabstop>
+  <tabstop>xmin_val</tabstop>
+  <tabstop>xmax_val</tabstop>
+  <tabstop>ymin_val</tabstop>
+  <tabstop>ymax_val</tabstop>
+  <tabstop>decimal_but</tabstop>
+  <tabstop>semilogx_but</tabstop>
+  <tabstop>semilogy_but</tabstop>
+  <tabstop>loglog_but</tabstop>
+  <tabstop>file_path_box</tabstop>
+  <tabstop>file_path_open</tabstop>
+  <tabstop>xcolumn_index</tabstop>
+  <tabstop>y_column_index</tabstop>
+  <tabstop>comboLinestyle</tabstop>
+  <tabstop>comboMarker</tabstop>
+  <tabstop>comboColor</tabstop>
+  <tabstop>bocDiffColor</tabstop>
+  <tabstop>comboMarkerColor</tabstop>
+  <tabstop>plot_but</tabstop>
+ </tabstops>
  <resources>
   <include location="plot_resources.qrc"/>
  </resources>
