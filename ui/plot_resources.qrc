@@ -1,0 +1,9 @@
+<RCC>
+  <qresource prefix="icons">
+    <file>icons/undo.png</file>
+    <file>icons/redo.png</file>
+    <file>icons/abrir.png</file>
+    <file>icons/appicon.png</file>
+    <file>icons/guardar.png</file>
+  </qresource>
+</RCC>
