@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 from axes_template import axes_template
+from plot_manager import Plot_Manager
 
 def extended_figure(*args,**kwargs):
     kwargs["FigureClass"]=Extended_Figure
@@ -14,6 +15,7 @@ class Extended_Figure(plt.Figure):
         super(Extended_Figure,self).__init__(*args,**kwargs)
         self.ncol=1
         self.nrow=1
+        self.manager=Plot_Manager()
 
     def blank_figure(self):
         # Creates a blank figure
@@ -43,17 +45,21 @@ class Extended_Figure(plt.Figure):
         that identify each axis
         """
         self.template.generate_preview()
-    
+
     def plot(self,index,*args,**kwargs):
-        if "plot_label" in kwargs: plot_label=kwargs.pop("plot_label")
+        plot_label=""
+        if "plot_label" in kwargs:
+            plot_label=kwargs.pop("plot_label")
         if index in self.axes_dict:
-            self.axes_dict[index].plot(*args,**kwargs)
+            plot=self.axes_dict[index].plot(*args,**kwargs)[0]
+            self.manager.add_plot(index,plot,path=plot_label)
         else:
             print("This value for the axis is not defined")
             return
 
     def hist(self,index,*args,**kwargs):
-        if "plot_label" in kwargs: plot_label=kwargs.pop("plot_label")
+        if "plot_label" in kwargs:
+            plot_label=kwargs.pop("plot_label")
         if index in self.axes_dict:
             if "width" in kwargs:
                 if kwargs["width"]=="auto":
@@ -200,6 +206,18 @@ class Extended_Figure(plt.Figure):
                     ticks[-1].set_visible(False)
                     adjusted_ticks.append(matrix[row][column])
         self.subplots_adjust(wspace=0)
+
+    def undo(self):
+        self.manager.undo()
+
+    def redo(self):
+        self.manager.redo()
+
+    def canUndo(self):
+        return self.manager.canUndo()
+
+    def canRedo(self):
+        return self.manager.canRedo()
 
     def reset_ticks(self):
         """
