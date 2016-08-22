@@ -12,29 +12,20 @@ class Plotter2(Ui_MainWindow):
         return
 
     def setupUi(self,MainWindow):
-        super(Plotter2,self).setupUi(MainWindow)    
+        super(Plotter2,self).setupUi(MainWindow)
         ##############################
         # Setup actions of the menus #
         ##############################
         self.actionUndo.triggered.connect(self.undo_function)
-        self.actionSet_Template.triggered.connect(self.set_template)
+        self.actionRedo.triggered.connect(self.redo_function)
+        # self.actionSet_Template.triggered.connect(self.set_template)
 
         ###################################
         # Setup COnections of the toolbar #
         ###################################
 
         self.undo.clicked.connect(self.undo_function)
-
-        # #######################
-        # # Setup the tree view #
-        # #######################
-
-        # # model=QtGui.QDirModel()
-        # model=QtGui.QFileSystemModel()
-        # model.setRootPath("/homde/hadrian")
-        # self.treedir.setModel(model)
-        # self.treedir.setRootIndex(model.index("/hadrian/home/Documentos"))
-        # self.treedir.expand(model.index("/hadrian/home/Documentos"))
+        self.redo.clicked.connect(self.redo_function)
 
         ################
         # Setup Figure #
@@ -47,6 +38,12 @@ class Plotter2(Ui_MainWindow):
         self.canvas=FigureCanvas(figure)
         self.layout_3.addWidget(self.canvas,0,0)
         figure.canvas.callbacks.connect("button_press_event", self.select_ax)
+
+        ################################
+        # Setup connections for figure #
+        ################################
+
+        self.set_template_but.clicked.connect(self.set_template)
 
         ##########################################
         # Setup DoubleSpinbox of the axis limits #
@@ -70,23 +67,34 @@ class Plotter2(Ui_MainWindow):
         self.semilogy_but.clicked.connect(self.semilogy_scale)
         self.loglog_but.clicked.connect(self.loglog_scale)
 
+        ##############################
+        # Setup Buttons for plotting #
+        ##############################
+
+        self.file_path_open.clicked.connect(self.select_path)
+        self.bocDiffColor.stateChanged.connect(self.marker_color_policy)
+        self.plot_but.clicked.connect(self.plot_file)
+
         ##########################
         # Disable items on start #
         ##########################
 
         self.itemStatus(False)
 
-        self.bocDiffColor.stateChanged.connect(self.marker_color_policy)
-
     def undo_function(self):
-        self.error_dialog_axis()
-        print("Hola")
+        self.figure.undo()
+        self.canvas.draw()
+        self.updateUndoRedoButtons()
+
+    def redo_function(self):
+        self.figure.redo()
+        self.canvas.draw()
+        self.updateUndoRedoButtons()
 
     def set_template(self):
-        # This function should invoke a new dialog to
-        # define the template, now it just set the
-        # same template
-        self.figure.define_template(matrix=[[1,1,3],[2,2,3]])
+        ncol=self.ncol_template.value()
+        nrow=self.nrow_template.value()
+        self.figure.define_template(size=(nrow,ncol))
         self.canvas.draw()
 
     #######################
@@ -196,6 +204,62 @@ class Plotter2(Ui_MainWindow):
                               "Please check plot boundaries and try again")
         error_message.exec_()
 
+    ###########################
+    # Plotting File Functions #
+    ###########################
+
+    def select_path(self):
+
+        text=str(QtGui.QFileDialog.getOpenFileName())
+        self.file_path_box.setText(text)
+
+    def plot_file(self):
+        plot_parameters=self.export_properties()
+        xcolumn=self.xcolumn_index.value()
+        ycolumn=self.y_column_index.value()
+        path=str(self.file_path_box.text())
+        index=self.selected
+        self.figure.plot_file(path,index,xcol=xcolumn,ycol=ycolumn,**plot_parameters)
+        self.canvas.draw()
+        self.updateUndoRedoButtons()
+
+    def export_properties(self):
+        """Search for the properties set in the window and
+        export them for their use in kwargs"""
+
+        properties=dict()
+
+        # Search for the linestyle
+        # Linestyle in the combo is set as:
+        # explicative text "linestyle"
+        # doinf split('"')[-2] will return the linestyle
+        linestyle=str(self.comboLinestyle.currentText())
+        if linestyle!="None":
+            linestyle=linestyle.split('"')[-2]
+        properties["linestyle"]=linestyle
+
+        # Search for the marker
+        marker_raw=str(self.comboMarker.currentText())
+        if marker_raw!="None":
+            # If it is not None the formating is the same as in linestyle
+            marker_raw=marker_raw.split('"')[-2]
+        properties["marker"]=marker_raw
+
+        # Search for the color
+
+        color=str(self.comboColor.currentText()).lower()
+        if color!="auto":
+            properties["color"]=color
+
+        # If a different color is selected for the marker export it
+
+        if self.bocDiffColor.isChecked():
+            color=str(self.comboMarkerColor.currentText()).lower()
+            properties["markerfacecolor"]=color
+            properties["markeredgecolor"] =str(self.comboEdgeColor.currentText()).lower()
+
+        return properties
+
     #############################################
     # Methods to activate and desactivate items #
     #############################################
@@ -242,7 +306,14 @@ class Plotter2(Ui_MainWindow):
         self.comboLinestyle.setEnabled(state)
         self.comboMarker.setEnabled(state)
         self.comboMarkerColor.setEnabled(state)
+        self.comboEdgeColor.setEnabled(state)
         self.bocDiffColor.setEnabled(state)
+
+        #######################
+        # Disable button plot #
+        #######################
+
+        self.plot_but.setEnabled(state)
 
         ####################################
         # Set the state of the markercolor #
@@ -250,10 +321,33 @@ class Plotter2(Ui_MainWindow):
         if state:
             self.marker_color_policy()
 
+        ###################################################
+        # Check the correct state for the redoing buttons #
+        ###################################################
+
+        self.updateUndoRedoButtons()
+
+    def disable_join_buttons(self):
+        status_y=self.figure.template.yjoinable
+        status_x=self.figure.template.xjoinable
+        status_xy=(status_x and status_y)
+        self.joinx_but.setEnabled(status_x)
+        self.joiny_but.setEnabled(status_y)
+        self.joinxy_but.setEnabled(status_xy)
+
+    def updateUndoRedoButtons(self):
+        state_undo=self.figure.canUndo()
+        self.actionUndo.setEnabled(state_undo)
+        self.undo.setEnabled(state_undo)
+        state_redo=self.figure.canRedo()
+        self.actionRedo.setEnabled(state_redo)
+        self.redo.setEnabled(state_redo)
+
     def marker_color_policy(self):
 
         state=self.bocDiffColor.isChecked()
         self.comboMarkerColor.setEnabled(state)
+        self.comboEdgeColor.setEnabled(state)
 
 if __name__=="__main__":
     import sys
