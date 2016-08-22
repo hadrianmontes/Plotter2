@@ -19,9 +19,10 @@ class Plot_Manager():
                 copy+=1
             else:
                 string=string+"("+str(copy)+")"
-        
+
         self.plot_by_uid[self.uid]={"string":string,"plot":plot,"deleted":False}
-        if path: self.plot_by_uid[self.uid]["path"]=path
+        if path:
+            self.plot_by_uid[self.uid]["path"]=path
         self.uid_by_name[string]=self.uid
         self.changes.append(Change(1,plot))
         self.unchanges=[]
@@ -29,12 +30,10 @@ class Plot_Manager():
     def delete_plot(self,name):
         plot=self[name]
         plot.set_visible("False")
-        self.plot_by_uid[uid]["deleted"]=True
         self.changes.append(Change(-1,plot))
         self.unchanges=[]
 
     def edit_plot(self,name,list_changes):
-        plot=self[name]
         for change in list_changes:
             key_val="set_"+change[0]
             eval("plot."+key_val+"("+change[2]+")")
@@ -49,13 +48,19 @@ class Plot_Manager():
         self.unchanges.append(last_change)
         return
 
+    def canUndo(self):
+        return bool(len(self.changes))
+
+    def canRedo(self):
+        return bool(len(self.unchanges))
+
     def redo(self):
         if len(self.unchanges)==0:
             return
         unchange=self.unchanges.pop()
         unchange.redo()
         self.changes.append(unchange)
-        
+
     def __getitem__(self,name):
         uid=self.uid_by_name[name]
         plot=self.plot_by_uid[uid]["plot"]
@@ -76,7 +81,7 @@ class Change():
         self.list_changes=list_changes
 
     def undo(self):
-       self.undo_functions[self.kind]()
+        self.undo_functions[self.kind]()
 
     def redo(self):
         self.redo_functions[self.kind]()
@@ -97,17 +102,13 @@ class Change():
         self.plot.set_visible(False)
 
     def undo_edit(self):
-        for change in list_changes:
+        for change in self.list_changes:
             key_val="set_"+change[0]
             eval("self.plot."+key_val+"("+change[2]+")")
         return
 
     def redo_edit(self):
-        for change in list_changes:
+        for change in self.list_changes:
             key_val="set_"+change[0]
             eval("self.plot."+key_val+"("+change[1]+")")
         return
-        
-        
-
-
