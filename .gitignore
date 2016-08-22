@@ -1,3 +1,4 @@
 *.dat
 *~
 *pyc
+/plot_manager_flymake.py
