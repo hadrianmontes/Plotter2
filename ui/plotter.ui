@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
+ <author>Hadrian Montes Campos</author>
  <class>MainWindow</class>
  <widget class="QMainWindow" name="MainWindow">
   <property name="geometry">
@@ -11,7 +12,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Plotter</string>
   </property>
   <property name="windowIcon">
    <iconset>
@@ -136,161 +137,373 @@
      <layout class="QGridLayout" name="layout_2">
       <item row="0" column="0">
        <widget class="QTabWidget" name="properties_tab">
+        <property name="maximumSize">
+         <size>
+          <width>550</width>
+          <height>16777215</height>
+         </size>
+        </property>
         <property name="currentIndex">
          <number>2</number>
         </property>
-        <widget class="QWidget" name="template_tab">
+        <widget class="QWidget" name="figure_tab">
          <attribute name="title">
-          <string>Template</string>
+          <string>Figure</string>
          </attribute>
+         <layout class="QGridLayout" name="gridLayout_8">
+          <item row="0" column="0">
+           <widget class="QFrame" name="frame">
+            <property name="frameShape">
+             <enum>QFrame::StyledPanel</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Raised</enum>
+            </property>
+            <layout class="QGridLayout" name="gridLayout_9">
+             <item row="0" column="0">
+              <widget class="QLabel" name="label_17">
+               <property name="font">
+                <font>
+                 <pointsize>14</pointsize>
+                 <weight>75</weight>
+                 <bold>true</bold>
+                </font>
+               </property>
+               <property name="text">
+                <string>Set the figure template</string>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="0" colspan="2">
+              <widget class="QLabel" name="label_21">
+               <property name="font">
+                <font>
+                 <weight>75</weight>
+                 <bold>true</bold>
+                </font>
+               </property>
+               <property name="text">
+                <string>Advanced template (complex geometry of subplots using a grid):</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0" colspan="3">
+              <widget class="QLabel" name="label_18">
+               <property name="font">
+                <font>
+                 <weight>75</weight>
+                 <bold>true</bold>
+                </font>
+               </property>
+               <property name="text">
+                <string>Simple template (all the subplots are of the same size):</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="0" colspan="3">
+              <widget class="QFrame" name="frame_3">
+               <property name="frameShape">
+                <enum>QFrame::StyledPanel</enum>
+               </property>
+               <property name="frameShadow">
+                <enum>QFrame::Raised</enum>
+               </property>
+               <layout class="QHBoxLayout" name="horizontalLayout">
+                <item>
+                 <widget class="QLabel" name="label_19">
+                  <property name="text">
+                   <string>Number of columns:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QSpinBox" name="ncol_template">
+                  <property name="maximumSize">
+                   <size>
+                    <width>50</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
+                  <property name="minimum">
+                   <number>1</number>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="label_20">
+                  <property name="text">
+                   <string>Number of rows:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QSpinBox" name="nrow_template">
+                  <property name="maximumSize">
+                   <size>
+                    <width>50</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
+                  <property name="minimum">
+                   <number>1</number>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="set_template_but">
+                  <property name="text">
+                   <string>Set</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+             </item>
+             <item row="5" column="0" colspan="2" alignment="Qt::AlignHCenter">
+              <widget class="QPushButton" name="advanced_template_but">
+               <property name="text">
+                <string>Advanced Template</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QFrame" name="frame_2">
+            <property name="frameShape">
+             <enum>QFrame::StyledPanel</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Raised</enum>
+            </property>
+            <layout class="QGridLayout" name="gridLayout_3">
+             <item row="1" column="2">
+              <widget class="QPushButton" name="joiny_but">
+               <property name="text">
+                <string>Join Y Axes</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QPushButton" name="optimize_space_but">
+               <property name="text">
+                <string>Optimize Space</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="QPushButton" name="joinx_but">
+               <property name="text">
+                <string>Join X Axes</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="3">
+              <widget class="QPushButton" name="joinxy_but">
+               <property name="text">
+                <string>Join XY Axes</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="0" colspan="4">
+              <widget class="QLabel" name="label_22">
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>50</height>
+                </size>
+               </property>
+               <property name="font">
+                <font>
+                 <pointsize>14</pointsize>
+                 <weight>75</weight>
+                 <bold>true</bold>
+                </font>
+               </property>
+               <property name="text">
+                <string>Mange space between plots</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+         </layout>
         </widget>
         <widget class="QWidget" name="axis_prop">
          <attribute name="title">
           <string>Axis Properties</string>
          </attribute>
          <layout class="QGridLayout" name="gridLayout_2">
-          <item row="0" column="0">
-           <widget class="QLabel" name="label">
-            <property name="font">
-             <font>
-              <pointsize>15</pointsize>
-              <weight>75</weight>
-              <bold>true</bold>
-             </font>
+          <item row="1" column="0" colspan="2">
+           <widget class="QFrame" name="frame_5">
+            <property name="frameShape">
+             <enum>QFrame::StyledPanel</enum>
             </property>
-            <property name="text">
-             <string>Axis Limits</string>
+            <property name="frameShadow">
+             <enum>QFrame::Raised</enum>
             </property>
+            <layout class="QGridLayout" name="gridLayout_11">
+             <item row="0" column="0">
+              <widget class="QLabel" name="label_6">
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>20</height>
+                </size>
+               </property>
+               <property name="font">
+                <font>
+                 <pointsize>15</pointsize>
+                 <weight>75</weight>
+                 <bold>true</bold>
+                </font>
+               </property>
+               <property name="text">
+                <string>Axis Scale</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QPushButton" name="decimal_but">
+               <property name="text">
+                <string>Decimal</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="QPushButton" name="semilogx_but">
+               <property name="text">
+                <string>Semilog X</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="2">
+              <widget class="QPushButton" name="semilogy_but">
+               <property name="text">
+                <string>Semilog Y</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="3">
+              <widget class="QPushButton" name="loglog_but">
+               <property name="text">
+                <string>Log Log</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
            </widget>
           </item>
-          <item row="2" column="1">
-           <widget class="QDoubleSpinBox" name="ymin_val">
-            <property name="minimum">
-             <double>-99999.990000000005239</double>
+          <item row="0" column="0" colspan="2">
+           <widget class="QFrame" name="frame_4">
+            <property name="frameShape">
+             <enum>QFrame::StyledPanel</enum>
             </property>
-            <property name="maximum">
-             <double>99999.990000000005239</double>
+            <property name="frameShadow">
+             <enum>QFrame::Raised</enum>
             </property>
-            <property name="singleStep">
-             <double>0.500000000000000</double>
-            </property>
+            <layout class="QGridLayout" name="gridLayout_10">
+             <item row="0" column="0" alignment="Qt::AlignBottom">
+              <widget class="QLabel" name="label">
+               <property name="font">
+                <font>
+                 <pointsize>15</pointsize>
+                 <weight>75</weight>
+                 <bold>true</bold>
+                </font>
+               </property>
+               <property name="text">
+                <string>Axis Limits</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="2">
+              <widget class="QLabel" name="label_3">
+               <property name="text">
+                <string>Max</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="1">
+              <widget class="QDoubleSpinBox" name="xmin_val">
+               <property name="minimum">
+                <double>-99999.990000000005239</double>
+               </property>
+               <property name="maximum">
+                <double>99999.990000000005239</double>
+               </property>
+               <property name="singleStep">
+                <double>0.500000000000000</double>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="0" alignment="Qt::AlignRight">
+              <widget class="QLabel" name="label_4">
+               <property name="text">
+                <string>X Axis</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="2">
+              <widget class="QDoubleSpinBox" name="xmax_val">
+               <property name="buttonSymbols">
+                <enum>QAbstractSpinBox::UpDownArrows</enum>
+               </property>
+               <property name="minimum">
+                <double>-99999.990000000005239</double>
+               </property>
+               <property name="maximum">
+                <double>99999.990000000005239</double>
+               </property>
+               <property name="singleStep">
+                <double>0.500000000000000</double>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="QLabel" name="label_2">
+               <property name="text">
+                <string>Min</string>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="1">
+              <widget class="QDoubleSpinBox" name="ymin_val">
+               <property name="minimum">
+                <double>-99999.990000000005239</double>
+               </property>
+               <property name="maximum">
+                <double>99999.990000000005239</double>
+               </property>
+               <property name="singleStep">
+                <double>0.500000000000000</double>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="2">
+              <widget class="QDoubleSpinBox" name="ymax_val">
+               <property name="minimum">
+                <double>-99999.990000000005239</double>
+               </property>
+               <property name="maximum">
+                <double>99999.990000000005239</double>
+               </property>
+               <property name="singleStep">
+                <double>0.500000000000000</double>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="0" alignment="Qt::AlignRight">
+              <widget class="QLabel" name="label_5">
+               <property name="text">
+                <string>Y Axis</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
            </widget>
-          </item>
-          <item row="2" column="2">
-           <widget class="QDoubleSpinBox" name="ymax_val">
-            <property name="minimum">
-             <double>-99999.990000000005239</double>
-            </property>
-            <property name="maximum">
-             <double>99999.990000000005239</double>
-            </property>
-            <property name="singleStep">
-             <double>0.500000000000000</double>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="2">
-           <widget class="QDoubleSpinBox" name="xmax_val">
-            <property name="buttonSymbols">
-             <enum>QAbstractSpinBox::UpDownArrows</enum>
-            </property>
-            <property name="minimum">
-             <double>-99999.990000000005239</double>
-            </property>
-            <property name="maximum">
-             <double>99999.990000000005239</double>
-            </property>
-            <property name="singleStep">
-             <double>0.500000000000000</double>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="QDoubleSpinBox" name="xmin_val">
-            <property name="minimum">
-             <double>-99999.990000000005239</double>
-            </property>
-            <property name="maximum">
-             <double>99999.990000000005239</double>
-            </property>
-            <property name="singleStep">
-             <double>0.500000000000000</double>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1" alignment="Qt::AlignBottom">
-           <widget class="QLabel" name="label_2">
-            <property name="text">
-             <string>Min</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="0" alignment="Qt::AlignRight">
-           <widget class="QLabel" name="label_5">
-            <property name="text">
-             <string>Y Axis</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="2" alignment="Qt::AlignBottom">
-           <widget class="QLabel" name="label_3">
-            <property name="text">
-             <string>Max</string>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="0" alignment="Qt::AlignBottom">
-           <widget class="QLabel" name="label_6">
-            <property name="font">
-             <font>
-              <pointsize>15</pointsize>
-              <weight>75</weight>
-              <bold>true</bold>
-             </font>
-            </property>
-            <property name="text">
-             <string>Axis Scale</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0" alignment="Qt::AlignRight">
-           <widget class="QLabel" name="label_4">
-            <property name="text">
-             <string>X Axis</string>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="0" colspan="3">
-           <layout class="QGridLayout" name="gridLayout_3">
-            <item row="0" column="1">
-             <widget class="QPushButton" name="semilogx_but">
-              <property name="text">
-               <string>Semilog X</string>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="2">
-             <widget class="QPushButton" name="semilogy_but">
-              <property name="text">
-               <string>Semilog Y</string>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="0" alignment="Qt::AlignTop">
-             <widget class="QPushButton" name="decimal_but">
-              <property name="text">
-               <string>Decimal</string>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="3">
-             <widget class="QPushButton" name="loglog_but">
-              <property name="text">
-               <string>Log Log</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
           </item>
          </layout>
         </widget>
@@ -310,6 +523,12 @@
             </item>
             <item row="0" column="0">
              <widget class="QLabel" name="label_7">
+              <property name="font">
+               <font>
+                <weight>75</weight>
+                <bold>true</bold>
+               </font>
+              </property>
               <property name="text">
                <string>Select the file from which the data wil be read:</string>
               </property>
@@ -352,6 +571,12 @@
             </item>
             <item row="0" column="0" colspan="4">
              <widget class="QLabel" name="label_8">
+              <property name="font">
+               <font>
+                <weight>75</weight>
+                <bold>true</bold>
+               </font>
+              </property>
               <property name="text">
                <string>Select the column of the file where
 the x and y data should be read from:</string>
@@ -419,7 +644,7 @@ color for marker</string>
               </item>
               <item>
                <property name="text">
-                <string>Pointed &quot;.&quot;</string>
+                <string>Pointed &quot;..&quot;</string>
                </property>
               </item>
               <item>
@@ -494,6 +719,12 @@ color for marker</string>
             </item>
             <item row="1" column="0" colspan="4">
              <widget class="QLabel" name="label_11">
+              <property name="font">
+               <font>
+                <weight>75</weight>
+                <bold>true</bold>
+               </font>
+              </property>
               <property name="text">
                <string>Line and marker porperties:</string>
               </property>
@@ -502,17 +733,13 @@ color for marker</string>
             <item row="4" column="0">
              <widget class="QLabel" name="label_15">
               <property name="text">
-               <string>Marker Color</string>
+               <string>Marker Face
+       Color</string>
               </property>
              </widget>
             </item>
             <item row="4" column="1">
              <widget class="QComboBox" name="comboMarkerColor">
-              <item>
-               <property name="text">
-                <string>Auto</string>
-               </property>
-              </item>
               <item>
                <property name="text">
                 <string>Black</string>
@@ -555,6 +782,53 @@ color for marker</string>
               <property name="text">
                <string>Plot</string>
               </property>
+             </widget>
+            </item>
+            <item row="4" column="2">
+             <widget class="QLabel" name="label_16">
+              <property name="text">
+               <string>Marker Edge
+         Color</string>
+              </property>
+             </widget>
+            </item>
+            <item row="4" column="3">
+             <widget class="QComboBox" name="comboEdgeColor">
+              <item>
+               <property name="text">
+                <string>Black</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Blue</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Cyan</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Green</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Pink</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Red</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Yellow</string>
+               </property>
+              </item>
              </widget>
             </item>
            </layout>
@@ -651,6 +925,14 @@ color for marker</string>
   <tabstop>undo</tabstop>
   <tabstop>redo</tabstop>
   <tabstop>properties_tab</tabstop>
+  <tabstop>ncol_template</tabstop>
+  <tabstop>nrow_template</tabstop>
+  <tabstop>set_template_but</tabstop>
+  <tabstop>advanced_template_but</tabstop>
+  <tabstop>optimize_space_but</tabstop>
+  <tabstop>joinx_but</tabstop>
+  <tabstop>joiny_but</tabstop>
+  <tabstop>joinxy_but</tabstop>
   <tabstop>xmin_val</tabstop>
   <tabstop>xmax_val</tabstop>
   <tabstop>ymin_val</tabstop>
@@ -668,6 +950,7 @@ color for marker</string>
   <tabstop>comboColor</tabstop>
   <tabstop>bocDiffColor</tabstop>
   <tabstop>comboMarkerColor</tabstop>
+  <tabstop>comboEdgeColor</tabstop>
   <tabstop>plot_but</tabstop>
  </tabstops>
  <resources>
