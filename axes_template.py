@@ -143,6 +143,7 @@ class axes_template():
             ax.set_yticks([])
             ax.set_ylim([0,0.2])
             ax.text(0.45,0.09,str(axnum),fontsize=32)
+        return fig
 
     def chek_joinable(self):
         self.xjoinable=True
