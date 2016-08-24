@@ -1,7 +1,8 @@
-from PyQt4 import QtGui
+from PyQt4 import QtGui, QtCore
 from ui.mainwindow import Ui_MainWindow
 from extended_figure import extended_figure
 from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
+from template_gepmetry import TemplateDialog
 # from matplotlib.backends.backend_qt4agg import NavigationToolbar2QT as NavigationToolbar
 
 class Plotter2(Ui_MainWindow):
@@ -26,6 +27,7 @@ class Plotter2(Ui_MainWindow):
 
         self.undo.clicked.connect(self.undo_function)
         self.redo.clicked.connect(self.redo_function)
+        self.export_2.clicked.connect(self.export_fun)
 
         ################
         # Setup Figure #
@@ -44,6 +46,11 @@ class Plotter2(Ui_MainWindow):
         ################################
 
         self.set_template_but.clicked.connect(self.set_template)
+        self.joinx_but.clicked.connect(self.joinx)
+        self.joiny_but.clicked.connect(self.joiny)
+        self.joinxy_but.clicked.connect(self.joinxy)
+        self.optimize_space_but.clicked.connect(self.optimize_space)
+        self.advanced_template_but.clicked.connect(self.set_advanced_template)
 
         ##########################################
         # Setup DoubleSpinbox of the axis limits #
@@ -95,6 +102,37 @@ class Plotter2(Ui_MainWindow):
         ncol=self.ncol_template.value()
         nrow=self.nrow_template.value()
         self.figure.define_template(size=(nrow,ncol))
+        self.canvas.draw()
+
+    def set_advanced_template(self):
+        dialog=QtGui.QDialog()
+        dialog.ui=TemplateDialog()
+        dialog.ui.setupUi(dialog)
+        dialog.setAttribute(QtCore.Qt.WA_DeleteOnClose)
+        dialog.exec_()
+        self.figure.define_template(matrix=dialog.ui.matrix)
+        self.disable_join_buttons()
+        self.canvas.draw()
+
+    ####################
+    # Figure Functions #
+    ####################
+
+    def joinx(self):
+        self.figure.join_x()
+        self.canvas.draw()
+
+    def joiny(self):
+        self.figure.join_y()
+        self.canvas.draw()
+
+    def joinxy(self):
+        self.figure.join_xy()
+        self.canvas.draw()
+
+    def optimize_space(self):
+        self.figure.reset_ticks()
+        self.figure.tight_layout()
         self.canvas.draw()
 
     #######################
@@ -348,6 +386,14 @@ class Plotter2(Ui_MainWindow):
         state=self.bocDiffColor.isChecked()
         self.comboMarkerColor.setEnabled(state)
         self.comboEdgeColor.setEnabled(state)
+
+    ###########################
+    # Import/Export functions #
+    ###########################
+
+    def export_fun(self):
+        text=str(QtGui.QFileDialog.getSaveFileName())
+        self.figure.savefig(text)
 
 if __name__=="__main__":
     import sys
