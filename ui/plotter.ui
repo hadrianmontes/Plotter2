@@ -155,7 +155,7 @@
          </size>
         </property>
         <property name="currentIndex">
-         <number>0</number>
+         <number>1</number>
         </property>
         <widget class="QWidget" name="figure_tab">
          <attribute name="title">
@@ -439,6 +439,9 @@
              </item>
              <item row="2" column="1">
               <widget class="QDoubleSpinBox" name="xmin_val">
+               <property name="decimals">
+                <number>4</number>
+               </property>
                <property name="minimum">
                 <double>-99999.990000000005239</double>
                </property>
@@ -462,6 +465,9 @@
                <property name="buttonSymbols">
                 <enum>QAbstractSpinBox::UpDownArrows</enum>
                </property>
+               <property name="decimals">
+                <number>4</number>
+               </property>
                <property name="minimum">
                 <double>-99999.990000000005239</double>
                </property>
@@ -482,6 +488,9 @@
              </item>
              <item row="3" column="1">
               <widget class="QDoubleSpinBox" name="ymin_val">
+               <property name="decimals">
+                <number>4</number>
+               </property>
                <property name="minimum">
                 <double>-99999.990000000005239</double>
                </property>
@@ -495,6 +504,9 @@
              </item>
              <item row="3" column="2">
               <widget class="QDoubleSpinBox" name="ymax_val">
+               <property name="decimals">
+                <number>4</number>
+               </property>
                <property name="minimum">
                 <double>-99999.990000000005239</double>
                </property>
