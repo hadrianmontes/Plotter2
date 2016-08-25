@@ -56,10 +56,10 @@ class Plotter2(Ui_MainWindow):
         # Setup DoubleSpinbox of the axis limits #
         ##########################################
 
-        self.xmin_val.valueChanged.connect(self.update_limits)
-        self.xmax_val.valueChanged.connect(self.update_limits)
-        self.ymin_val.valueChanged.connect(self.update_limits)
-        self.ymax_val.valueChanged.connect(self.update_limits)
+        self.xmin_val.valueChanged.connect(self.update_min_xlim)
+        self.xmax_val.valueChanged.connect(self.update_max_xlim)
+        self.ymin_val.valueChanged.connect(self.update_min_ylim)
+        self.ymax_val.valueChanged.connect(self.update_max_ylim)
         self.xmin_val.setValue(0)
         self.xmax_val.setValue(1)
         self.ymin_val.setValue(0)
@@ -192,6 +192,54 @@ class Plotter2(Ui_MainWindow):
         plot.set_xlim((xmin,xmax))
         plot.set_ylim((ymin,ymax))
         self.canvas.draw()
+
+    def update_min_xlim(self):
+        if not self.selected:
+            return
+        plot=self.figure.axes_dict[self.selected]
+        xmin=self.xmin_val.value()
+        xmin2=plot.get_xlim()[0]
+        if xmin!=xmin2:
+            xmax=self.xmax_val.value()
+            plot.set_xlim((xmin,xmax))
+        else:
+            return
+
+    def update_max_xlim(self):
+        if not self.selected:
+            return
+        plot=self.figure.axes_dict[self.selected]
+        xmax=self.xmax_val.value()
+        xmax2=plot.get_xlim()[1]
+        if xmax!=xmax2:
+            xmin=self.xmin_val.value()
+            plot.set_xlim((xmin,xmax))
+        else:
+            return
+
+    def update_min_ylim(self):
+        if not self.selected:
+            return
+        plot=self.figure.axes_dict[self.selected]
+        ymin=self.ymin_val.value()
+        ymin2=plot.get_ylim()[0]
+        if ymin!=ymin2:
+            ymax=self.ymax_val.value()
+            plot.set_ylim((ymin,ymax))
+        else:
+            return
+
+    def update_max_ylim(self):
+        if not self.selected:
+            return
+        plot=self.figure.axes_dict[self.selected]
+        ymax=self.ymax_val.value()
+        ymax2=plot.get_ylim()[1]
+        if ymax!=ymax2:
+            ymin=self.ymin_val.value()
+            plot.set_ylim((ymin,ymax))
+        else:
+            return
 
     def decimal_scale(self):
         plot=self.figure.axes_dict[self.selected]
