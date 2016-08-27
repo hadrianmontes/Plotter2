@@ -74,6 +74,12 @@ class Plotter2(Ui_MainWindow):
         self.semilogy_but.clicked.connect(self.semilogy_scale)
         self.loglog_but.clicked.connect(self.loglog_scale)
 
+        ############################
+        # Setup Signals for labels #
+        ############################
+
+        self.setlabels_but.clicked.connect(self.set_labels)
+
         ##############################
         # Setup Buttons for plotting #
         ##############################
@@ -160,6 +166,15 @@ class Plotter2(Ui_MainWindow):
         self.itemStatus(bool(self.selected))
         self.canvas.draw()
 
+    def select_ax_manual(self,index):
+        if self.selected and self.selected!=index:
+            self.unremark_axis(self.selected)
+        self.selected=index
+        if index:
+            self.remark_axis(index)
+        self.itemStatus(bool(self.selected))
+        self.canvas.draw()
+
     def remark_axis(self,index):
         ax=self.figure.axes_dict[index]
         ax.spines["bottom"].set_color("red")
@@ -167,6 +182,7 @@ class Plotter2(Ui_MainWindow):
         ax.spines["right"].set_color("red")
         ax.spines["left"].set_color("red")
         self.update_limits_indicators(index)
+        self.update_labels_box()
 
     def unremark_axis(self,index):
         ax=self.figure.axes_dict[index]
@@ -178,6 +194,21 @@ class Plotter2(Ui_MainWindow):
     ################################
     # Porperties of Axes Functions #
     ################################
+
+    def update_labels_box(self):
+        plot=self.figure.axes_dict[self.selected]
+        xlabel=plot.get_xlabel()
+        ylabel=plot.get_ylabel()
+        self.xlabel_box.setText(xlabel)
+        self.ylabel_box.setText(ylabel)
+
+    def set_labels(self):
+        plot=self.figure.axes_dict[self.selected]
+        xlabel=str(self.xlabel_box.text())
+        ylabel=str(self.ylabel_box.text())
+        plot.set_xlabel(xlabel)
+        plot.set_ylabel(ylabel)
+        self.canvas.draw()
 
     def update_limits_indicators(self,index):
         plot=self.figure.axes_dict[index]
@@ -320,6 +351,7 @@ class Plotter2(Ui_MainWindow):
         self.figure.plot_file(path,index,xcol=xcolumn,ycol=ycolumn,**plot_parameters)
         self.canvas.draw()
         self.update_limits_indicators(self.selected)
+        self.update_labels_box()
         self.updateUndoRedoButtons()
 
     def export_properties(self):
@@ -382,6 +414,14 @@ class Plotter2(Ui_MainWindow):
         self.semilogx_but.setEnabled(state)
         self.semilogy_but.setEnabled(state)
         self.loglog_but.setEnabled(state)
+
+        #######################
+        # Disable axes labels #
+        #######################
+
+        self.xlabel_box.setEnabled(state)
+        self.ylabel_box.setEnabled(state)
+        self.setlabels_but.setEnabled(state)
 
         #####################
         # Disable path file #
