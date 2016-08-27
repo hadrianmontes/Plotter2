@@ -99,6 +99,7 @@ class Plotter2(Ui_MainWindow):
         self.updateUndoRedoButtons()
 
     def set_template(self):
+        self.clear_figure()
         ncol=self.ncol_template.value()
         nrow=self.nrow_template.value()
         self.figure.define_template(size=(nrow,ncol))
@@ -109,10 +110,13 @@ class Plotter2(Ui_MainWindow):
         dialog.ui=TemplateDialog()
         dialog.ui.setupUi(dialog)
         dialog.setAttribute(QtCore.Qt.WA_DeleteOnClose)
-        dialog.exec_()
-        self.figure.define_template(matrix=dialog.ui.matrix)
-        self.disable_join_buttons()
-        self.canvas.draw()
+        if dialog.exec_():
+            # Only executed the code if the Dialog exits with
+            # the accept buttons
+            self.clear_figure()
+            self.figure.define_template(matrix=dialog.ui.matrix)
+            self.disable_join_buttons()
+            self.canvas.draw()
 
     ####################
     # Figure Functions #
@@ -134,6 +138,9 @@ class Plotter2(Ui_MainWindow):
         self.figure.reset_ticks()
         self.figure.tight_layout()
         self.canvas.draw()
+
+    def clear_figure(self):
+        self.figure.clear()
 
     #######################
     # Selection Functions #
@@ -182,6 +189,7 @@ class Plotter2(Ui_MainWindow):
         self.ymax_val.setValue(ymax)
 
     def update_limits(self):
+        # Deprecated function, it have some bugs
         if not self.selected:
             return
         plot=self.figure.axes_dict[self.selected]
@@ -202,6 +210,7 @@ class Plotter2(Ui_MainWindow):
         if xmin!=xmin2:
             xmax=self.xmax_val.value()
             plot.set_xlim((xmin,xmax))
+            self.canvas.draw()
         else:
             return
 
@@ -214,6 +223,7 @@ class Plotter2(Ui_MainWindow):
         if xmax!=xmax2:
             xmin=self.xmin_val.value()
             plot.set_xlim((xmin,xmax))
+            self.canvas.draw()
         else:
             return
 
@@ -226,6 +236,7 @@ class Plotter2(Ui_MainWindow):
         if ymin!=ymin2:
             ymax=self.ymax_val.value()
             plot.set_ylim((ymin,ymax))
+            self.canvas.draw()
         else:
             return
 
@@ -238,6 +249,7 @@ class Plotter2(Ui_MainWindow):
         if ymax!=ymax2:
             ymin=self.ymin_val.value()
             plot.set_ylim((ymin,ymax))
+            self.canvas.draw()
         else:
             return
 
@@ -307,6 +319,7 @@ class Plotter2(Ui_MainWindow):
         index=self.selected
         self.figure.plot_file(path,index,xcol=xcolumn,ycol=ycolumn,**plot_parameters)
         self.canvas.draw()
+        self.update_limits_indicators(self.selected)
         self.updateUndoRedoButtons()
 
     def export_properties(self):

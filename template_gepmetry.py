@@ -1,19 +1,23 @@
-from PyQt4 import QtGui
 from ui.template_dialog import Ui_Dialog
+from PyQt4 import QtGui
 import matplotlib.pyplot as plt
 from axes_template import axes_template
 from time import sleep
 
 class TemplateDialog(Ui_Dialog):
     def __init__(self,*args,**kwargs):
+        self.selectedIndex=False
         super(TemplateDialog,self).__init__(*args,**kwargs)
 
     def setupUi(self,MainWindow):
+        self.parent=MainWindow
         super(TemplateDialog,self).setupUi(MainWindow)
         self.set_but.clicked.connect(self.setColRow)
-        self.table_template.itemSelectionChanged.connect(self.test)
+        self.table_template.itemSelectionChanged.connect(self.increase_selection)
         self.table_template.cellPressed.connect(self.selected_item)
         self.preview_but.clicked.connect(self.preview)
+        self.dialog_buttons.accepted.connect(self.accept)
+        self.dialog_buttons.rejected.connect(self.reject)
         self.setColRow()
 
     def setColRow(self):
@@ -38,7 +42,6 @@ class TemplateDialog(Ui_Dialog):
                 self.prematrix[-1].append(self.matrix[i][j])
 
     def selected_item(self):
-        print("hola")
         # print(self.table_template.selectedIndexes())
         index=self.table_template.currentIndex()
         self.selectedIndex=self.prematrix[index.row()][index.column()]
@@ -49,9 +52,11 @@ class TemplateDialog(Ui_Dialog):
                 self.prematrix[-1].append(self.matrix[i][j])
 
         self.startingIn=(index.row(),index.column())
-        print(index.row(),index.column(),self.selectedIndex)
+        # print(index.row(),index.column(),self.selectedIndex)
 
-    def test(self):
+    def increase_selection(self):
+        if not self.selectedIndex:
+            return
         indexes=self.table_template.selectedIndexes()
         for index in indexes:
             row=index.row()
@@ -59,8 +64,6 @@ class TemplateDialog(Ui_Dialog):
             self.matrix[row][column]=self.selectedIndex
             item=QtGui.QTableWidgetItem(str(self.selectedIndex))
             self.table_template.setItem(row,column,item)
-            
-        print("huehuhue")
 
     def preview(self):
         template=axes_template(matrix=self.matrix)
@@ -68,3 +71,9 @@ class TemplateDialog(Ui_Dialog):
         fig.show()
         sleep(5)
         plt.close(fig)
+
+    def accept(self):
+        self.parent.accept()
+
+    def reject(self):
+        self.parent.close()

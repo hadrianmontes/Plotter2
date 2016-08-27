@@ -182,7 +182,7 @@ class Extended_Figure(plt.Figure):
 
         # Change the range of all the subplots
         for column in range(self.nrow):
-            self.axes_dict[matrix[-1][column]].set_ylim((minimuns[column],maximuns[column]))
+            self.axes_dict[matrix[column][-1]].set_ylim((minimuns[column],maximuns[column]))
         self.fix_y_ticks()
 
     def fix_y_ticks(self):
@@ -230,9 +230,11 @@ class Extended_Figure(plt.Figure):
                 axes = self.axes_dict[matrix[row][column]]
                 x_ticks = axes.xaxis.get_major_ticks()
                 for tick in x_ticks:
+                    tick.set_visible(True)
                     tick.label1.set_visible(True)
                 y_ticks = axes.yaxis.get_major_ticks()
                 for tick in y_ticks:
+                    tick.set_visible(True)
                     tick.label1.set_visible(True)
 
 
