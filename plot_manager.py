@@ -73,11 +73,23 @@ class Change():
         # [keyword,previous_value,new_value]
         self.undo_functions=[self.undo_edit,self.undo_add,self.undo_delete]
         self.redo_functions=[self.redo_edit,self.redo_add,self.redo_delete]
+        self.add_functions=[self.edit,self.add,self.delete]
         # Kind -1 means plot deleted
         # 0 means plot edited
         # 1 means new plot
         self.kind=kind
         self.plot=plot
+        self.add_functions[kind](list_changes)
+
+    def add(self,list_changes):
+        current_label=self.plot.get_label()
+        self.list_changes=[["label","",current_label]]
+
+    def delete(self,list_changes):
+        current_label=self.plot.get_label()
+        self.list_changes=[["label",current_label,""]]
+
+    def edit(self,list_changes):
         self.list_changes=list_changes
 
     def undo(self):
@@ -88,27 +100,33 @@ class Change():
 
     def undo_add(self):
         self.plot.set_visible(False)
+        self.undo_edit()
         return
 
     def redo_add(self):
         self.plot.set_visible(True)
+        self.redo_edit()
         return
 
     def undo_delete(self):
         self.plot.set_visible(True)
+        self.undo_edit()
         return
 
     def redo_delete(self):
         self.plot.set_visible(False)
+        self.redo_edit()
 
     def undo_edit(self):
         for change in self.list_changes:
             key_val="set_"+change[0]
-            eval("self.plot."+key_val+"("+change[2]+")")
+            function=eval("self.plot."+key_val)
+            function(change[1])
         return
 
     def redo_edit(self):
         for change in self.list_changes:
             key_val="set_"+change[0]
-            eval("self.plot."+key_val+"("+change[1]+")")
+            function=eval("self.plot."+key_val)
+            function(change[2])
         return

@@ -88,6 +88,10 @@ class Extended_Figure(plt.Figure):
         y=objeto.data[1]
         self.plot(index,x,y,**kwargs)
 
+    def update_legend(self,index,state):
+        legend=self.axes_dict[index]
+        legend.set_visible(state)
+
     def join_xy(self):
         if not (self.template.xjoinable and self.template.yjoinable):
             print("The tempalte does not allow this kind of joining"+

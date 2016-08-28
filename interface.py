@@ -79,6 +79,7 @@ class Plotter2(Ui_MainWindow):
         ############################
 
         self.setlabels_but.clicked.connect(self.set_labels)
+        self.showlegend.stateChanged.connect(self.update_legend)
 
         ##############################
         # Setup Buttons for plotting #
@@ -98,10 +99,12 @@ class Plotter2(Ui_MainWindow):
         self.figure.undo()
         self.canvas.draw()
         self.updateUndoRedoButtons()
+        self.update_legend()
 
     def redo_function(self):
         self.figure.redo()
         self.canvas.draw()
+        self.update_legend()
         self.updateUndoRedoButtons()
 
     def set_template(self):
@@ -325,6 +328,14 @@ class Plotter2(Ui_MainWindow):
             plot.set_xscale("log")
             self.canvas.draw()
 
+    def update_legend(self):
+        plot=self.figure.axes_dict[self.selected]
+        legend=plot.legend()
+        state=self.showlegend.isChecked()
+        legend.set_visible(state)
+        self.canvas.draw()
+        return
+
     def error_dialog_axis(self,axis="x"):
         error_message=QtGui.QMessageBox()
         error_message.setIcon(QtGui.QMessageBox.Warning)
@@ -349,6 +360,7 @@ class Plotter2(Ui_MainWindow):
         path=str(self.file_path_box.text())
         index=self.selected
         self.figure.plot_file(path,index,xcol=xcolumn,ycol=ycolumn,**plot_parameters)
+        self.update_legend()
         self.canvas.draw()
         self.update_limits_indicators(self.selected)
         self.update_labels_box()
@@ -359,6 +371,11 @@ class Plotter2(Ui_MainWindow):
         export them for their use in kwargs"""
 
         properties=dict()
+
+        # Search for label
+
+        label=str(self.plotlabel_box.text())
+        properties["label"]=label
 
         # Search for the linestyle
         # Linestyle in the combo is set as:
@@ -429,6 +446,12 @@ class Plotter2(Ui_MainWindow):
 
         self.file_path_box.setEnabled(state)
         self.file_path_open.setEnabled(state)
+
+        ######################
+        # Disable plot label #
+        ######################
+
+        self.plotlabel_box.setEnabled(state)
 
         #######################
         # Disable file column #
