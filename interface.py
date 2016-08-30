@@ -111,11 +111,13 @@ class Plotter2(Ui_MainWindow):
         self.updateUndoRedoButtons()
 
     def set_template(self):
+        self.selected=None
         self.clear_figure()
         ncol=self.ncol_template.value()
         nrow=self.nrow_template.value()
         self.figure.define_template(size=(nrow,ncol))
         self.canvas.draw()
+        self.select_ax_manual(1)
 
     def set_advanced_template(self):
         dialog=QtGui.QDialog()
@@ -123,11 +125,17 @@ class Plotter2(Ui_MainWindow):
         dialog.ui.setupUi(dialog)
         dialog.setAttribute(QtCore.Qt.WA_DeleteOnClose)
         if dialog.exec_():
+            self.selected=None
             # Only executed the code if the Dialog exits with
             # the accept buttons
             self.clear_figure()
+            minimum=dialog.ui.matrix[0][0]
+            for row in dialog.ui.matrix:
+                for element in row:
+                    minimum=min(minimum,element)
             self.figure.define_template(matrix=dialog.ui.matrix)
             self.disable_join_buttons()
+            self.select_ax_manual(minimum)
             self.canvas.draw()
 
     ####################
@@ -164,8 +172,8 @@ class Plotter2(Ui_MainWindow):
             if self.selected and self.selected!=index:
                 self.unremark_axis(self.selected)
             self.selected=index
-            self.remark_axis(index)
         else:
+            self.remark_axis(index)
             if self.selected:
                 self.unremark_axis(self.selected)
             self.selected=None
@@ -334,6 +342,8 @@ class Plotter2(Ui_MainWindow):
     def update_legend(self):
         plot=self.figure.axes_dict[self.selected]
         legend=plot.legend()
+        if legend is None:
+            return
         state=self.showlegend.isChecked()
         legend.set_visible(state)
         self.canvas.draw()
@@ -442,6 +452,12 @@ class Plotter2(Ui_MainWindow):
         self.xlabel_box.setEnabled(state)
         self.ylabel_box.setEnabled(state)
         self.setlabels_but.setEnabled(state)
+
+        #########################
+        # Disable legend things #
+        #########################
+
+        self.showlegend.setEnabled(state)
 
         #####################
         # Disable path file #
