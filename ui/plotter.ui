@@ -1000,8 +1000,6 @@ color for marker</string>
     <property name="title">
      <string>Edit</string>
     </property>
-    <addaction name="actionSet_Template"/>
-    <addaction name="separator"/>
     <addaction name="actionUndo"/>
     <addaction name="actionRedo"/>
    </widget>

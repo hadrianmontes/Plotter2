@@ -499,8 +499,6 @@ class Ui_MainWindow(object):
         self.menuFile.addAction(self.actionSave)
         self.menuFile.addAction(self.actionSave_as)
         self.menuFile.addAction(self.actionExport)
-        self.menuEdit.addAction(self.actionSet_Template)
-        self.menuEdit.addSeparator()
         self.menuEdit.addAction(self.actionUndo)
         self.menuEdit.addAction(self.actionRedo)
         self.menubar.addAction(self.menuFile.menuAction())
