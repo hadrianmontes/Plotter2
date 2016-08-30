@@ -6,7 +6,9 @@ from template_gepmetry import TemplateDialog
 # from matplotlib.backends.backend_qt4agg import NavigationToolbar2QT as NavigationToolbar
 
 class Plotter2(Ui_MainWindow):
-
+    """
+    This class defines the behaviour of the ui of the mainwindow
+    """
     def __init__(self,*args,**kwargs):
         super(Plotter2,self).__init__(*args,**kwargs)
         self.selected=None
@@ -19,6 +21,7 @@ class Plotter2(Ui_MainWindow):
         ##############################
         self.actionUndo.triggered.connect(self.undo_function)
         self.actionRedo.triggered.connect(self.redo_function)
+        self.actionExport.triggered.connect(self.export_fun)
         # self.actionSet_Template.triggered.connect(self.set_template)
 
         ###################################
