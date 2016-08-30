@@ -36,8 +36,10 @@ class Extended_Figure(plt.Figure):
         self.nrow=self.template.nrow
         self.axes_dict=self.template.apply_template(self)
         self.index_dict=dict()
+        self.legend_status=dict()
         for index in self.axes_dict:
             self.index_dict[self.axes_dict[index]]=index
+            self.legend_status[index]=True
 
     def view_template(self):
         """
