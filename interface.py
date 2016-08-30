@@ -172,8 +172,8 @@ class Plotter2(Ui_MainWindow):
             if self.selected and self.selected!=index:
                 self.unremark_axis(self.selected)
             self.selected=index
-        else:
             self.remark_axis(index)
+        else:
             if self.selected:
                 self.unremark_axis(self.selected)
             self.selected=None
@@ -196,6 +196,7 @@ class Plotter2(Ui_MainWindow):
         ax.spines["right"].set_color("red")
         ax.spines["left"].set_color("red")
         self.update_limits_indicators(index)
+        self.update_legend_info(index)
         self.update_labels_box()
 
     def unremark_axis(self,index):
@@ -342,12 +343,17 @@ class Plotter2(Ui_MainWindow):
     def update_legend(self):
         plot=self.figure.axes_dict[self.selected]
         legend=plot.legend()
+        state=self.showlegend.isChecked()
+        self.figure.legend_status[self.selected]=state
         if legend is None:
             return
-        state=self.showlegend.isChecked()
         legend.set_visible(state)
         self.canvas.draw()
         return
+
+    def update_legend_info(self,index):
+        state=self.figure.legend_status[index]
+        self.showlegend.setChecked(state)
 
     def error_dialog_axis(self,axis="x"):
         error_message=QtGui.QMessageBox()
