@@ -150,8 +150,8 @@ class Extended_Figure(plt.Figure):
             removed_ticks=[]
             for row in range(self.nrow):
                 if matrix[row][column]!=bottom_index and matrix[row][column] not in removed_ticks:
-                        tick.label1.set_visible(False)
                     for tick in self.axes_dict[matrix[row][column]].xaxis.get_major_ticks():
+                        tick.label1.set_visible(False)
                     removed_ticks.append(matrix[row][column])
                 if matrix[row][column]!=top_index and matrix[row][column] not in adjusted_ticks:
                     ticks=self.axes_dict[matrix[row][column]].yaxis.get_major_ticks()
@@ -243,6 +243,13 @@ class Extended_Figure(plt.Figure):
                 for tick in y_ticks:
                     tick.set_visible(True)
                     tick.label1.set_visible(True)
+
+    ################################
+    # Loading and saving functions #
+    ################################
+
+    def save(self):
+        return
 
 
 def read_file(filename,xcol=0,ycol=1):
