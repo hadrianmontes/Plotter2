@@ -15,7 +15,7 @@ class Extended_Figure(plt.Figure):
         super(Extended_Figure,self).__init__(*args,**kwargs)
         self.ncol=1
         self.nrow=1
-        self.manager=Plot_Manager()
+        self.manager=Plot_Manager(self)
 
     def blank_figure(self):
         # Creates a blank figure
@@ -35,6 +35,7 @@ class Extended_Figure(plt.Figure):
         self.ncol=self.template.ncol
         self.nrow=self.template.nrow
         self.axes_dict=self.template.apply_template(self)
+        self.manager=Plot_Manager(self)
         self.index_dict=dict()
         self.legend_status=dict()
         for index in self.axes_dict:
@@ -149,8 +150,8 @@ class Extended_Figure(plt.Figure):
             removed_ticks=[]
             for row in range(self.nrow):
                 if matrix[row][column]!=bottom_index and matrix[row][column] not in removed_ticks:
-                    for tick in self.axes_dict[matrix[row][column]].xaxis.get_major_ticks():
                         tick.label1.set_visible(False)
+                    for tick in self.axes_dict[matrix[row][column]].xaxis.get_major_ticks():
                     removed_ticks.append(matrix[row][column])
                 if matrix[row][column]!=top_index and matrix[row][column] not in adjusted_ticks:
                     ticks=self.axes_dict[matrix[row][column]].yaxis.get_major_ticks()
