@@ -3,7 +3,8 @@ class Plot_Manager():
     plots with operations such as removing plots, editing existing
     or reverting last change"""
 
-    def __init__(self):
+    def __init__(self,parent):
+        self.parent=parent
         self.uid=0
         self.plot_by_uid=dict()
         self.uid_by_name=dict()
