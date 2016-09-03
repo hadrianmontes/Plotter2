@@ -10,8 +10,9 @@ class Plot_Manager():
         self.uid_by_name=dict()
         self.changes=[]
         self.unchanges=[]
+        self.indexes=[]
 
-    def add_plot(self,index,plot,string=None,path=None):
+    def add_plot(self,index,plot,properties,string=None,path=None):
         if string is None:
             string="Unnamed plot "+str(self.uid)
         elif string in self.uid_by_name:
@@ -21,12 +22,20 @@ class Plot_Manager():
             else:
                 string=string+"("+str(copy)+")"
 
-        self.plot_by_uid[self.uid]={"string":string,"plot":plot,"deleted":False}
+        # save the color in the porperties
+        # wether it was lready saved or not
+        properties["color"]=plot.get_color()
+
+        self.plot_by_uid[self.uid]={"string":string,"plot":plot,"deleted":False,"index":index,"properties":properties}
+        if index not in self.indexes:
+            self.indexes.append(index)
+
         if path:
             self.plot_by_uid[self.uid]["path"]=path
         self.uid_by_name[string]=self.uid
         self.changes.append(Change(1,plot))
         self.unchanges=[]
+        self.uid+=1
 
     def delete_plot(self,name):
         plot=self[name]
@@ -67,6 +76,54 @@ class Plot_Manager():
         plot=self.plot_by_uid[uid]["plot"]
         return plot
 
+    ################################
+    # Loading and saving functions #
+    ################################
+
+    def save(self,filename):
+        f=open(filename,"w")
+        # First get the current template
+        f.write("Template:\n")
+        template=self.parent.template.matrix
+        for row in template:
+            for item in row:
+                f.write("\t")
+                f.write(str(item))
+            f.write("\n")
+
+        # Start writting the info of the plots
+        for index in self.indexes:
+            f.write("Index: ")
+            f.write(str(index))
+            f.write("\n")
+            for uid in self.plot_by_uid:
+                plot=self.plot_by_uid[uid]
+                if plot["index"]==index:
+                    self.write_info(uid,plot,f)
+
+        f.close()
+        return
+
+    def write_info(self,uid,plot,filebuffer):
+        if "path" not in plot:
+            print("Found a non savable plot")
+            return
+        filebuffer.write("\tPlot: "+str(uid)+"\n")
+
+        # Write the path
+        path=str(plot["path"])
+        filebuffer.write("\t\tPath "+path+"\n")
+
+        # Write its string
+        string=str(plot["string"])
+        filebuffer.write("\t\tstring "+string+"\n")
+
+        # Write their properties
+
+        for option in plot["properties"]:
+            formated=plot["properties"][option]
+            filebuffer.write("\t\t"+option+" "+formated+"\n")
+        filebuffer.flush()
 
 class Change():
     def __init__(self,kind,plot,list_changes=None):
