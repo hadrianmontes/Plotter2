@@ -55,7 +55,7 @@ class Extended_Figure(plt.Figure):
             plot_label=kwargs.pop("plot_label")
         if index in self.axes_dict:
             plot=self.axes_dict[index].plot(*args,**kwargs)[0]
-            self.manager.add_plot(index,plot,path=plot_label)
+            self.manager.add_plot(index,plot,kwargs,path=plot_label)
         else:
             print("This value for the axis is not defined")
             return
@@ -244,13 +244,12 @@ class Extended_Figure(plt.Figure):
                     tick.set_visible(True)
                     tick.label1.set_visible(True)
 
-    ################################
-    # Loading and saving functions #
-    ################################
+    ###########################
+    # Lading saving functions #
+    ###########################
 
-    def save(self):
-        return
-
+    def save(self,path):
+        self.manager.save(path)
 
 def read_file(filename,xcol=0,ycol=1):
     f=open(filename)
