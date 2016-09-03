@@ -12,6 +12,7 @@ class Plotter2(Ui_MainWindow):
     def __init__(self,*args,**kwargs):
         super(Plotter2,self).__init__(*args,**kwargs)
         self.selected=None
+        self.savepath=None
         return
 
     def setupUi(self,MainWindow):
@@ -22,6 +23,8 @@ class Plotter2(Ui_MainWindow):
         self.actionUndo.triggered.connect(self.undo_function)
         self.actionRedo.triggered.connect(self.redo_function)
         self.actionExport.triggered.connect(self.export_fun)
+        self.actionSave.triggered.connect(self.savefun)
+        self.actionSave_as.triggered.connect(self.saveasfun)
         # self.actionSet_Template.triggered.connect(self.set_template)
 
         ###################################
@@ -543,6 +546,25 @@ class Plotter2(Ui_MainWindow):
     def export_fun(self):
         text=str(QtGui.QFileDialog.getSaveFileName())
         self.figure.savefig(text)
+
+    def savefun(self):
+        # Check if there is an existing save path or not
+        # if not it creates a dialog to select it
+        if self.savepath is None:
+            self.saveasfun()
+        else:
+            self.saveinfile()
+
+    def saveinfile(self):
+        self.figure.save(self.savepath)
+
+    def saveasfun(self):
+        text=str(QtGui.QFileDialog.getSaveFileName())
+        if text=="":
+            return
+        else:
+            self.savepath=text
+            self.saveinfile()
 
 if __name__=="__main__":
     import sys
