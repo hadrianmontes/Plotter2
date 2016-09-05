@@ -96,6 +96,7 @@ class Plot_Manager():
             f.write("Index: ")
             f.write(str(index))
             f.write("\n")
+            self.write_axis_info(index,f)
             for uid in self.plot_by_uid:
                 plot=self.plot_by_uid[uid]
                 if plot["index"]==index:
@@ -104,9 +105,30 @@ class Plot_Manager():
         f.close()
         return
 
+    def write_axis_info(self,index,filebuffer):
+        axis=self.parent.axes_dict[index]
+        filebuffer.write("xlimit ")
+        xmin,xmax=axis.get_xlim()
+        filebuffer.write(str(xmin)+" "+str(xmax)+"\n")
+
+        filebuffer.write("ylimit ")
+        ymin,ymax=axis.get_ylim()
+        filebuffer.write(str(ymin)+" "+str(ymax)+"\n")
+
+        xlabel=axis.get_xlabel()
+        filebuffer.write("xlabel "+xlabel+"\n")
+
+        ylabel=axis.get_ylabel()
+        filebuffer.write("ylabel "+ylabel+"\n")
+
+        label_visible=self.parent.legend_status[index]
+        filebuffer.write("label_visible "+str(label_visible)+"\n")
+
     def write_info(self,uid,plot,filebuffer):
         if "path" not in plot:
             print("Found a non savable plot")
+            return
+        if not plot["plot"].get_visible():
             return
         filebuffer.write("\tPlot: "+str(uid)+"\n")
 
