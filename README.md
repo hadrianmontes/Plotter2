@@ -1,4 +1,4 @@
-##Plotter2
+#Plotter2
 
 Plotter 2 is a remodeled version of the program plotter. It is intended to manage plots 
 hat can be confiusing to do in a script in an easy way. It features plotting differnt subplots
@@ -9,7 +9,7 @@ columns in a single file). It is possible to export the plots in all the formats
 (.pdf,.eps,.png,...). It is also possible to save the work in a text file that can be loaded later
 in order to continue or edit the work.
 
-# Instalation
+## Instalation
 
 The ways to install right now the program is:
 
