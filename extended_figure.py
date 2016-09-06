@@ -50,17 +50,32 @@ class Extended_Figure(plt.Figure):
         self.template.generate_preview()
 
     def plot(self,index,*args,**kwargs):
+        xcol=None
+        ycol=None
+        string=None
+        if "xcol" in kwargs:
+            xcol=kwargs.pop("xcol")
+        if "ycol" in kwargs:
+            ycol=kwargs.pop("ycol")
+        if "string" in kwargs:
+            string=kwargs.pop("string")
         plot_label=""
         if "plot_label" in kwargs:
             plot_label=kwargs.pop("plot_label")
         if index in self.axes_dict:
             plot=self.axes_dict[index].plot(*args,**kwargs)[0]
-            self.manager.add_plot(index,plot,kwargs,path=plot_label)
+            self.manager.add_plot(index,plot,kwargs,path=plot_label,xcol=xcol,ycol=ycol,string=string)
         else:
             print("This value for the axis is not defined")
             return
 
     def hist(self,index,*args,**kwargs):
+        xcol=None
+        ycol=None
+        if "xcol" in kwargs:
+            xcol=kwargs.pop("xcol")
+        if "ycol" in kwargs:
+            ycol=kwargs.pop("ycol")
         if "plot_label" in kwargs:
             plot_label=kwargs.pop("plot_label")
         if index in self.axes_dict:
@@ -76,13 +91,18 @@ class Extended_Figure(plt.Figure):
     def hist_file(self,filename,index,xcol=0,ycol=1,**kwargs):
         if "plot_label" not in kwargs:
             kwargs["plot_label"]=filename
+        kwargs["xcol"]=xcol
+        kwargs["ycol"]=ycol
         x,y=read_file(filename,xcol,ycol)
         self.hist(index,x,y,**kwargs)
 
     def plot_file(self,filename,index,xcol=0,ycol=1,**kwargs):
         if "plot_label" not in kwargs:
             kwargs["plot_label"]=filename
-        x,y=read_file(filename,xcol,ycol)
+        kwargs["xcol"]=int(xcol)
+        kwargs["ycol"]=int(ycol)
+        x,y=read_file(filename,int(xcol),int(ycol))
+        # Make a copy to avoid nasty changes in plots
         self.plot(index,x,y,**kwargs)
         return
 
@@ -250,6 +270,9 @@ class Extended_Figure(plt.Figure):
 
     def save(self,path):
         self.manager.save(path)
+
+    def load(self,path):
+        return self.manager.load(path)
 
 def read_file(filename,xcol=0,ycol=1):
     f=open(filename)
