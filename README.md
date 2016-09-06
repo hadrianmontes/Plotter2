@@ -9,7 +9,7 @@ columns in a single file). It is possible to export the plots in all the formats
 (.pdf,.eps,.png,...). It is also possible to save the work in a text file that can be loaded later
 in order to continue or edit the work.
 
-## Instalation
+## Installation
 
 The ways to install right now the program is:
 
