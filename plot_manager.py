@@ -12,7 +12,7 @@ class Plot_Manager():
         self.unchanges=[]
         self.indexes=[]
 
-    def add_plot(self,index,plot,properties,string=None,path=None):
+    def add_plot(self,index,plot,properties,string=None,path=None,xcol=None,ycol=None):
         if string is None:
             string="Unnamed plot "+str(self.uid)
         elif string in self.uid_by_name:
@@ -27,6 +27,12 @@ class Plot_Manager():
         properties["color"]=plot.get_color()
 
         self.plot_by_uid[self.uid]={"string":string,"plot":plot,"deleted":False,"index":index,"properties":properties}
+
+        # Save info about columns if existing
+        if xcol is not None and ycol is not None:
+            self.plot_by_uid[self.uid]["xcol"]=xcol
+            self.plot_by_uid[self.uid]["ycol"]=ycol
+
         if index not in self.indexes:
             self.indexes.append(index)
 
@@ -90,6 +96,7 @@ class Plot_Manager():
                 f.write("\t")
                 f.write(str(item))
             f.write("\n")
+        f.write("End Template\n")
 
         # Start writting the info of the plots
         for index in self.indexes:
@@ -124,6 +131,8 @@ class Plot_Manager():
         label_visible=self.parent.legend_status[index]
         filebuffer.write("label_visible "+str(label_visible)+"\n")
 
+        filebuffer.write("End Axis\n")
+
     def write_info(self,uid,plot,filebuffer):
         if "path" not in plot:
             print("Found a non savable plot")
@@ -140,12 +149,113 @@ class Plot_Manager():
         string=str(plot["string"])
         filebuffer.write("\t\tstring "+string+"\n")
 
+        # Write the columns
+        if "xcol" in plot:
+            filebuffer.write("\t\txcol "+str(plot["xcol"])+"\n")
+            filebuffer.write("\t\tycol "+str(plot["ycol"])+"\n")
+
+
         # Write their properties
 
         for option in plot["properties"]:
             formated=plot["properties"][option]
             filebuffer.write("\t\t"+option+" "+formated+"\n")
-        filebuffer.flush()
+
+        filebuffer.write("End Plot\n")
+        return
+
+    def load(self,filename):
+        template_loaded=False
+        f=open(filename,"r")
+        index=None
+        for l in f:
+            l=l.strip()
+            # Start different functions depending on keywords
+            if l=="Template:":
+                template_loaded=self.load_template(f)
+            if l.startswith("Index:"):
+                if not template_loaded:
+                    print ("Template must be defined at the begining")
+                    return
+                index=int(l.split()[1])
+                self.load_axis(f,index)
+            if l.startswith("Plot"):
+                self.load_plot(index,f)
+        return index
+
+    def load_plot(self, index, filebuffer):
+        path=""
+        string=None
+        options=dict()
+        for l in filebuffer:
+            l=l.strip()
+            if l=="":
+                continue
+            elif l=="End Plot":
+                break
+            option=l.split()[0].lower()
+            if option!="path":
+                value=l[len(option)+1:]
+                options[option]=value
+            else:
+                path=l[len(option)+1:]
+        self.parent.plot_file(path,index,**options)
+
+    def load_axis(self,filebuffer,index):
+        xlabel=""
+        ylabel=""
+        xlimit=[0,1]
+        ylimit=[0,1]
+        visible=True
+        for l in filebuffer:
+            l=l.strip()
+            if l==("End Axis"):
+                break
+            elif l.startswith("xlimit"):
+                xlimit=[float(i) for i in l.split()[1:]]
+            elif l.startswith("ylimit"):
+                ylimit=[float(i) for i in l.split()[1:]]
+            elif l.startswith("xlabel"):
+                if len(l)!=len("xlabel"):
+                    xlabel=l[len("xlabel"+1):]
+            elif l.startswith("ylabel"):
+                if len(l)!=len("ylabel"):
+                    ylabel=l[len("xlabel"+1):]
+            elif l.startswith("label_visible"):
+                if l.split()[1].lower()=="false":
+                    visible=False
+            
+        axis=self.parent.axes_dict[index]
+        axis.set_xlim(xlimit)
+        axis.set_ylim(ylimit)
+        axis.set_xlabel(xlabel)
+        axis.set_ylabel(ylabel)
+        self.parent.legend_status[index]=visible
+        return
+
+    def load_template(self, filebuffer):
+        template=[]
+        # Reads until end is reached
+        for l in filebuffer:
+            l=l.strip()
+            if l=="End Template":
+                break
+            elif l=="":
+                pass
+            else:
+                newline=[int(i) for i in l.split()]
+                template.append(newline)
+
+        if template!=[]:
+            self.parent.define_template(matrix=template)
+            return True
+        else:
+            return False
+    
+
+
+            
+            
 
 class Change():
     def __init__(self,kind,plot,list_changes=None):

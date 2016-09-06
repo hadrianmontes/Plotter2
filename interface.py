@@ -25,6 +25,7 @@ class Plotter2(Ui_MainWindow):
         self.actionExport.triggered.connect(self.export_fun)
         self.actionSave.triggered.connect(self.savefun)
         self.actionSave_as.triggered.connect(self.saveasfun)
+        self.actionOpen.triggered.connect(self.loadfun)
         # self.actionSet_Template.triggered.connect(self.set_template)
 
         ###################################
@@ -565,6 +566,23 @@ class Plotter2(Ui_MainWindow):
         else:
             self.savepath=text
             self.saveinfile()
+    
+    def loadfun(self):
+        text=str(QtGui.QFileDialog.getOpenFileName())
+        if text=="":
+            return
+        else:
+            self.figure.load(text)
+        for row in self.figure.template.matrix:
+            for item in row:
+                self.selected=item
+                self.update_limits_indicators(item)
+                self.update_legend()
+                self.canvas.draw()
+
+        self.update_labels_box()
+        self.updateUndoRedoButtons()
+        self.optimize_space()
 
 if __name__=="__main__":
     import sys
