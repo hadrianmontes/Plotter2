@@ -217,10 +217,10 @@ class Plot_Manager():
                 ylimit=[float(i) for i in l.split()[1:]]
             elif l.startswith("xlabel"):
                 if len(l)!=len("xlabel"):
-                    xlabel=l[len("xlabel"+1):]
+                    xlabel=l[len("xlabel")+1:]
             elif l.startswith("ylabel"):
                 if len(l)!=len("ylabel"):
-                    ylabel=l[len("xlabel"+1):]
+                    ylabel=l[len("xlabel")+1:]
             elif l.startswith("label_visible"):
                 if l.split()[1].lower()=="false":
                     visible=False
