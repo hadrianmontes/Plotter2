@@ -33,6 +33,8 @@ class Plotter2(Ui_MainWindow):
         ###################################
 
         self.undo.clicked.connect(self.undo_function)
+        self.save.clicked.connect(self.savefun)
+        self.open.clicked.connect(self.loadfun)
         self.redo.clicked.connect(self.redo_function)
         self.export_2.clicked.connect(self.export_fun)
 
@@ -546,7 +548,11 @@ class Plotter2(Ui_MainWindow):
 
     def export_fun(self):
         text=str(QtGui.QFileDialog.getSaveFileName())
+        if self.selected:
+            self.unremark_axis(self.selected)
         self.figure.savefig(text)
+        if self.selected:
+            self.remark_axis(self.selected)
 
     def savefun(self):
         # Check if there is an existing save path or not
