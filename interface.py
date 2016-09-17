@@ -551,7 +551,17 @@ class Plotter2(Ui_MainWindow):
     ###########################
 
     def export_fun(self):
-        text=str(QtGui.QFileDialog.getSaveFileName())
+        text=str(QtGui.QFileDialog.getSaveFileName(filter="Portable Document File (*.pdf)"+
+                                                   ";;Portable Network Graphics (*.png)"+
+                                                   ";;Encapsulated Postscript (*.eps)"+
+                                                   ";;All Files (*)",
+                                                   directory=self.currentpath,
+                                                   options=QtGui.QFileDialog.DontUseNativeDialog))
+        if text=="":
+            return
+
+        self.currentpath=os.path.dirname(text)
+        
         if self.selected:
             self.unremark_axis(self.selected)
         self.figure.savefig(text)
