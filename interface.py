@@ -3,6 +3,7 @@ from ui.mainwindow import Ui_MainWindow
 from extended_figure import extended_figure
 from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
 from template_gepmetry import TemplateDialog
+import os
 # from matplotlib.backends.backend_qt4agg import NavigationToolbar2QT as NavigationToolbar
 
 class Plotter2(Ui_MainWindow):
@@ -13,6 +14,7 @@ class Plotter2(Ui_MainWindow):
         super(Plotter2,self).__init__(*args,**kwargs)
         self.selected=None
         self.savepath=None
+        self.currentpath=os.getcwd()
         return
 
     def setupUi(self,MainWindow):
@@ -375,7 +377,9 @@ class Plotter2(Ui_MainWindow):
 
     def select_path(self):
 
-        text=str(QtGui.QFileDialog.getOpenFileName())
+        text=str(QtGui.QFileDialog.getOpenFileName(directory=self.currentpath))
+        if text:
+            self.currentpath=os.path.dirname(text)
         self.file_path_box.setText(text)
 
     def plot_file(self):
@@ -553,6 +557,7 @@ class Plotter2(Ui_MainWindow):
         self.figure.savefig(text)
         if self.selected:
             self.remark_axis(self.selected)
+            self.canvas.draw()
 
     def savefun(self):
         # Check if there is an existing save path or not
@@ -566,19 +571,26 @@ class Plotter2(Ui_MainWindow):
         self.figure.save(self.savepath)
 
     def saveasfun(self):
-        text=str(QtGui.QFileDialog.getSaveFileName())
+        text=str(QtGui.QFileDialog.getSaveFileName(filter="Plotter2 savefiles (*.plt2);;All Files (*)",
+                                                   directory=self.currentpath,
+                                                   options=QtGui.QFileDialog.DontUseNativeDialog))
         if text=="":
             return
         else:
             self.savepath=text
+            self.currentpath=os.path.dirname(text)
             self.saveinfile()
     
     def loadfun(self):
-        text=str(QtGui.QFileDialog.getOpenFileName())
+        text=str(QtGui.QFileDialog.getOpenFileName(filter="Plotter2 savefiles (*.plt2);;All Files (*)",
+                                                   directory=self.currentpath,
+                                                   options=QtGui.QFileDialog.DontUseNativeDialog))
         if text=="":
             return
         else:
             self.figure.load(text)
+            self.currentpath=os.path.dirname(text)
+            self.savepath=text
         for row in self.figure.template.matrix:
             for item in row:
                 self.selected=item
