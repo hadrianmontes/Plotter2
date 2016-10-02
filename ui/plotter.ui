@@ -753,7 +753,7 @@ color for marker</string>
               </item>
               <item>
                <property name="text">
-                <string>Pointed &quot;..&quot;</string>
+                <string>Pointed &quot;:&quot;</string>
                </property>
               </item>
               <item>

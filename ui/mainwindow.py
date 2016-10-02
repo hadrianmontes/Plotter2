@@ -589,7 +589,7 @@ class Ui_MainWindow(object):
         self.comboMarker.setItemText(2, _translate("MainWindow", "Circle \"o\"", None))
         self.comboLinestyle.setItemText(0, _translate("MainWindow", "Solid: \"-\"", None))
         self.comboLinestyle.setItemText(1, _translate("MainWindow", "Dasded: \"--\"", None))
-        self.comboLinestyle.setItemText(2, _translate("MainWindow", "Pointed \"..\"", None))
+        self.comboLinestyle.setItemText(2, _translate("MainWindow", "Pointed \":\"", None))
         self.comboLinestyle.setItemText(3, _translate("MainWindow", "Dash point: \"-.\"", None))
         self.comboLinestyle.setItemText(4, _translate("MainWindow", "None", None))
         self.label_14.setText(_translate("MainWindow", "Color", None))
