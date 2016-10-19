@@ -1,5 +1,5 @@
-from PyQt4 import QtGui, QtCore
 from ui.mainwindow import Ui_MainWindow
+from PyQt4 import QtGui, QtCore
 from extended_figure import extended_figure
 from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
 from template_gepmetry import TemplateDialog
@@ -92,9 +92,18 @@ class Plotter2(Ui_MainWindow):
         self.setlabels_but.clicked.connect(self.set_labels)
         self.showlegend.stateChanged.connect(self.update_legend)
 
+        ###########################################
+        # Setup Signals for position/ticks radios #
+        ###########################################
+
+        self.top_pos_radio.pressed.connect(self.top_pressed)
+        self.bottom_pos_radio.pressed.connect(self.bottom_pressed)
+        self.left_pos_radio.pressed.connect(self.left_pressed)
+        self.right_pos_radio.pressed.connect(self.right_pressed)
+
+        ##############################
         ##############################
         # Setup Buttons for plotting #
-        ##############################
 
         self.file_path_open.clicked.connect(self.select_path)
         self.bocDiffColor.stateChanged.connect(self.marker_color_policy)
@@ -371,6 +380,38 @@ class Plotter2(Ui_MainWindow):
                               "Please check plot boundaries and try again")
         error_message.exec_()
 
+    def top_pressed(self):
+        plot=self.figure.axes_dict[self.selected]
+        plot.xaxis.tick_top()
+        plot.xaxis.set_ticks_position("both")
+        plot.xaxis.set_label_position("top")
+        self.optimize_space()
+        self.canvas.draw()
+
+    def bottom_pressed(self):
+        plot=self.figure.axes_dict[self.selected]
+        plot.xaxis.tick_bottom()
+        plot.xaxis.set_ticks_position("both")
+        plot.xaxis.set_label_position("bottom")
+        self.optimize_space()
+        self.canvas.draw()
+
+    def right_pressed(self):
+        plot=self.figure.axes_dict[self.selected]
+        plot.yaxis.tick_right()
+        plot.yaxis.set_ticks_position("both")
+        plot.yaxis.set_label_position("right")
+        self.optimize_space()
+        self.canvas.draw()
+
+    def left_pressed(self):
+        plot=self.figure.axes_dict[self.selected]
+        plot.yaxis.tick_left()
+        plot.yaxis.set_ticks_position("both")
+        plot.yaxis.set_label_position("left")
+        self.optimize_space()
+        self.canvas.draw()
+
     ###########################
     # Plotting File Functions #
     ###########################
@@ -468,6 +509,14 @@ class Plotter2(Ui_MainWindow):
         self.xlabel_box.setEnabled(state)
         self.ylabel_box.setEnabled(state)
         self.setlabels_but.setEnabled(state)
+
+        ###################################
+        # Disable the radio for positions #
+        ###################################
+        self.left_pos_radio.setEnabled(state)
+        self.right_pos_radio.setEnabled(state)
+        self.top_pos_radio.setEnabled(state)
+        self.bottom_pos_radio.setEnabled(state)
 
         #########################
         # Disable legend things #
@@ -590,7 +639,7 @@ class Plotter2(Ui_MainWindow):
             self.savepath=text
             self.currentpath=os.path.dirname(text)
             self.saveinfile()
-    
+
     def loadfun(self):
         text=str(QtGui.QFileDialog.getOpenFileName(filter="Plotter2 savefiles (*.plt2);;All Files (*)",
                                                    directory=self.currentpath,
