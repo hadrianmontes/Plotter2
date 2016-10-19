@@ -155,7 +155,7 @@
          </size>
         </property>
         <property name="currentIndex">
-         <number>0</number>
+         <number>1</number>
         </property>
         <widget class="QWidget" name="figure_tab">
          <attribute name="title">
@@ -223,7 +223,7 @@
                 <item>
                  <widget class="QLabel" name="label_19">
                   <property name="text">
-                   <string>Number of columns:</string>
+                   <string>Number of rows:</string>
                   </property>
                  </widget>
                 </item>
@@ -243,7 +243,7 @@
                 <item>
                  <widget class="QLabel" name="label_20">
                   <property name="text">
-                   <string>Number of rows:</string>
+                   <string>Number of columns</string>
                   </property>
                  </widget>
                 </item>
@@ -581,7 +581,7 @@
             </layout>
            </widget>
           </item>
-          <item row="3" column="0" colspan="2">
+          <item row="4" column="0" colspan="2">
            <widget class="QFrame" name="frame_8">
             <property name="frameShape">
              <enum>QFrame::StyledPanel</enum>
@@ -608,6 +608,60 @@
               <widget class="QCheckBox" name="showlegend">
                <property name="text">
                 <string>Show Legend</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item row="3" column="0" colspan="2">
+           <widget class="QFrame" name="frame_9">
+            <property name="frameShape">
+             <enum>QFrame::StyledPanel</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Raised</enum>
+            </property>
+            <layout class="QGridLayout" name="gridLayout_15">
+             <item row="1" column="0">
+              <widget class="QRadioButton" name="left_pos_radio">
+               <property name="text">
+                <string>Left</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="QRadioButton" name="right_pos_radio">
+               <property name="text">
+                <string>Right</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="2">
+              <widget class="QRadioButton" name="top_pos_radio">
+               <property name="text">
+                <string>Top</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="3">
+              <widget class="QRadioButton" name="bottom_pos_radio">
+               <property name="text">
+                <string>Bottom</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="0" colspan="4">
+              <widget class="QLabel" name="label_28">
+               <property name="font">
+                <font>
+                 <pointsize>15</pointsize>
+                 <weight>75</weight>
+                 <bold>true</bold>
+                </font>
+               </property>
+               <property name="text">
+                <string>Axis/Ticks Position</string>
                </property>
               </widget>
              </item>
