@@ -8,7 +8,7 @@
     <x>0</x>
     <y>0</y>
     <width>1106</width>
-    <height>697</height>
+    <height>737</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -155,7 +155,7 @@
          </size>
         </property>
         <property name="currentIndex">
-         <number>1</number>
+         <number>0</number>
         </property>
         <widget class="QWidget" name="figure_tab">
          <attribute name="title">
@@ -624,34 +624,70 @@
             </property>
             <layout class="QGridLayout" name="gridLayout_15">
              <item row="1" column="0">
-              <widget class="QRadioButton" name="left_pos_radio">
-               <property name="text">
-                <string>Left</string>
+              <widget class="QFrame" name="frame_10">
+               <property name="frameShape">
+                <enum>QFrame::StyledPanel</enum>
                </property>
+               <property name="frameShadow">
+                <enum>QFrame::Raised</enum>
+               </property>
+               <layout class="QGridLayout" name="gridLayout_16">
+                <item row="0" column="0">
+                 <widget class="QRadioButton" name="left_pos_radio">
+                  <property name="text">
+                   <string>Left</string>
+                  </property>
+                  <property name="checked">
+                   <bool>true</bool>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="1">
+                 <widget class="QRadioButton" name="right_pos_radio">
+                  <property name="text">
+                   <string>Right</string>
+                  </property>
+                  <property name="checked">
+                   <bool>false</bool>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
               </widget>
              </item>
              <item row="1" column="1">
-              <widget class="QRadioButton" name="right_pos_radio">
-               <property name="text">
-                <string>Right</string>
+              <widget class="QFrame" name="frame_11">
+               <property name="frameShape">
+                <enum>QFrame::StyledPanel</enum>
                </property>
+               <property name="frameShadow">
+                <enum>QFrame::Raised</enum>
+               </property>
+               <layout class="QGridLayout" name="gridLayout_17">
+                <item row="0" column="0">
+                 <widget class="QRadioButton" name="top_pos_radio">
+                  <property name="text">
+                   <string>Top</string>
+                  </property>
+                  <property name="checked">
+                   <bool>false</bool>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="1">
+                 <widget class="QRadioButton" name="bottom_pos_radio">
+                  <property name="text">
+                   <string>Bottom</string>
+                  </property>
+                  <property name="checked">
+                   <bool>true</bool>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
               </widget>
              </item>
-             <item row="1" column="2">
-              <widget class="QRadioButton" name="top_pos_radio">
-               <property name="text">
-                <string>Top</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="3">
-              <widget class="QRadioButton" name="bottom_pos_radio">
-               <property name="text">
-                <string>Bottom</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="0" colspan="4">
+             <item row="0" column="0" colspan="2">
               <widget class="QLabel" name="label_28">
                <property name="font">
                 <font>
