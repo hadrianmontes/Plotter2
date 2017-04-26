@@ -275,7 +275,7 @@ class Extended_Figure(plt.Figure):
         return self.manager.load(path)
 
 def read_file(filename,xcol=0,ycol=1):
-    f=open(filename,"ur")
+    f=open(filename,"Ur")
     x=[]
     y=[]
     for l in f:
