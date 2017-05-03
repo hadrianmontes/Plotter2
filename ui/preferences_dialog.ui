@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Options</class>
+ <widget class="QDialog" name="Options">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>668</width>
+    <height>370</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Preferences</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
+    <widget class="QWidget" name="widget" native="true">
+     <layout class="QGridLayout" name="gridLayout_2">
+      <item row="0" column="0">
+       <widget class="QWidget" name="widget_2" native="true">
+        <layout class="QGridLayout" name="gridLayout_3">
+         <item row="2" column="0">
+          <widget class="QRadioButton" name="tickmat1">
+           <property name="text">
+            <string>Matplotlib 1</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0" colspan="3">
+          <widget class="Line" name="line">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="QLabel" name="label">
+           <property name="font">
+            <font>
+             <pointsize>20</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>Ticks</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="QRadioButton" name="tickmat2">
+           <property name="text">
+            <string>Matplotlib2</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="2">
+          <widget class="QRadioButton" name="tickcust">
+           <property name="text">
+            <string>Custom</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0" colspan="3">
+          <widget class="QWidget" name="widget_4" native="true">
+           <layout class="QGridLayout" name="gridLayout_4">
+            <item row="2" column="2" alignment="Qt::AlignRight">
+             <widget class="QLabel" name="label_5">
+              <property name="text">
+               <string>Left ticks</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="2" alignment="Qt::AlignRight">
+             <widget class="QLabel" name="label_4">
+              <property name="text">
+               <string>Top ticks</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="3" alignment="Qt::AlignLeft">
+             <widget class="QCheckBox" name="topcheck">
+              <property name="text">
+               <string/>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0" alignment="Qt::AlignLeft">
+             <widget class="QLabel" name="label_2">
+              <property name="text">
+               <string>Xtick Direction</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="3" alignment="Qt::AlignLeft">
+             <widget class="QCheckBox" name="leftcheck">
+              <property name="text">
+               <string/>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="0" alignment="Qt::AlignLeft">
+             <widget class="QLabel" name="label_3">
+              <property name="text">
+               <string>Ytick DIrection</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="1" alignment="Qt::AlignLeft">
+             <widget class="QComboBox" name="ytickcombo">
+              <item>
+               <property name="text">
+                <string>In</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Out</string>
+               </property>
+              </item>
+             </widget>
+            </item>
+            <item row="1" column="1" alignment="Qt::AlignLeft">
+             <widget class="QComboBox" name="xtickcombo">
+              <item>
+               <property name="text">
+                <string>In</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Out</string>
+               </property>
+              </item>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QWidget" name="widget_3" native="true"/>
+      </item>
+      <item row="2" column="0">
+       <widget class="QDialogButtonBox" name="buttonBox">
+        <property name="standardButtons">
+         <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
