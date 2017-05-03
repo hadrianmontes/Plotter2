@@ -1,4 +1,5 @@
 from ui.mainwindow import Ui_MainWindow
+from options_dialog import PreferencesDialog
 from PyQt4 import QtGui, QtCore
 from extended_figure import extended_figure
 from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
@@ -28,6 +29,7 @@ class Plotter2(Ui_MainWindow):
         self.actionSave.triggered.connect(self.savefun)
         self.actionSave_as.triggered.connect(self.saveasfun)
         self.actionOpen.triggered.connect(self.loadfun)
+        self.actionPreferences.triggered.connect(self.change_preferences)
         # self.actionSet_Template.triggered.connect(self.set_template)
 
         ###################################
@@ -135,6 +137,13 @@ class Plotter2(Ui_MainWindow):
         self.figure.define_template(size=(nrow,ncol))
         self.canvas.draw()
         self.select_ax_manual(1)
+
+    def change_preferences(self):
+        dialog=QtGui.QDialog()
+        dialog.ui=PreferencesDialog()
+        dialog.ui.setupUi(dialog)
+        dialog.setAttribute(QtCore.Qt.WA_DeleteOnClose)
+        dialog.exec_()
 
     def set_advanced_template(self):
         dialog=QtGui.QDialog()
