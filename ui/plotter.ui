@@ -443,10 +443,10 @@
                 <number>4</number>
                </property>
                <property name="minimum">
-                <double>-99999.990000000005239</double>
+                <double>-999999999999999967336168804116691273849533185806555472917961779471295845921727862608739868455469056.000000000000000</double>
                </property>
                <property name="maximum">
-                <double>99999.990000000005239</double>
+                <double>999999999999999967336168804116691273849533185806555472917961779471295845921727862608739868455469056.000000000000000</double>
                </property>
                <property name="singleStep">
                 <double>0.500000000000000</double>
@@ -469,10 +469,10 @@
                 <number>4</number>
                </property>
                <property name="minimum">
-                <double>-99999.990000000005239</double>
+                <double>-999999999999999967336168804116691273849533185806555472917961779471295845921727862608739868455469056.000000000000000</double>
                </property>
                <property name="maximum">
-                <double>99999.990000000005239</double>
+                <double>999999999999999967336168804116691273849533185806555472917961779471295845921727862608739868455469056.000000000000000</double>
                </property>
                <property name="singleStep">
                 <double>0.500000000000000</double>
@@ -492,10 +492,10 @@
                 <number>4</number>
                </property>
                <property name="minimum">
-                <double>-99999.990000000005239</double>
+                <double>-999999999999999967336168804116691273849533185806555472917961779471295845921727862608739868455469056.000000000000000</double>
                </property>
                <property name="maximum">
-                <double>99999.990000000005239</double>
+                <double>999999999999999967336168804116691273849533185806555472917961779471295845921727862608739868455469056.000000000000000</double>
                </property>
                <property name="singleStep">
                 <double>0.500000000000000</double>
@@ -508,10 +508,10 @@
                 <number>4</number>
                </property>
                <property name="minimum">
-                <double>-99999.990000000005239</double>
+                <double>-999999999999999967336168804116691273849533185806555472917961779471295845921727862608739868455469056.000000000000000</double>
                </property>
                <property name="maximum">
-                <double>99999.990000000005239</double>
+                <double>999999999999999967336168804116691273849533185806555472917961779471295845921727862608739868455469056.000000000000000</double>
                </property>
                <property name="singleStep">
                 <double>0.500000000000000</double>
@@ -1092,6 +1092,7 @@ color for marker</string>
     </property>
     <addaction name="actionUndo"/>
     <addaction name="actionRedo"/>
+    <addaction name="actionPreferences"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
@@ -1140,6 +1141,11 @@ color for marker</string>
   <action name="actionSet_Template">
    <property name="text">
     <string>Set Template</string>
+   </property>
+  </action>
+  <action name="actionPreferences">
+   <property name="text">
+    <string>Preferences</string>
    </property>
   </action>
  </widget>
