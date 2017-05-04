@@ -22,7 +22,6 @@ class PreferencesDialog(Ui_Options):
     def accept(self):
         self.recopilate_options()
         options_to_rcparams(self.options)
-
         self.parent.accept()
 
     def cancel(self):
@@ -89,7 +88,7 @@ class PreferencesDialog(Ui_Options):
         self.options["lines.linewidth"] = self.linewidth.value()
         self.options["lines.markersize"] = self.markersize.value()
         self.options["font.size"] = self.fontsize.value()
-        self.options["legend.fontsize"] = self.legendsize.currentText()
+        self.options["legend.fontsize"] = str(self.legendsize.currentText())
 
     def disable_custom(self):
         self.xtickcombo.setEnabled(False)
