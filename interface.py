@@ -1,5 +1,5 @@
 from ui.mainwindow import Ui_MainWindow
-from options_dialog import PreferencesDialog
+from options_dialog import PreferencesDialog, load_options, options_to_rcparams
 from PyQt4 import QtGui, QtCore
 from extended_figure import extended_figure
 from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
@@ -16,6 +16,8 @@ class Plotter2(Ui_MainWindow):
         self.selected=None
         self.savepath=None
         self.currentpath=os.getcwd()
+        # Load the options from the config file_path_box
+        options_to_rcparams(load_options()[1])
         return
 
     def setupUi(self,MainWindow):
