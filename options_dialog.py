@@ -1,12 +1,13 @@
 from ui.preferences_dialog import Ui_Options
 import matplotlib
+from os import path
+import json
 from PyQt4 import QtGui
 
 class PreferencesDialog(Ui_Options):
     def __init__(self,*args,**kwargs):
         super(PreferencesDialog,self).__init__(*args,**kwargs)
-        version = matplotlib.__version__[0]
-        self.mode = version
+        self.mode, self.options = load_options()
 
     def setupUi(self,MainWindow):
         self.parent=MainWindow
@@ -22,11 +23,12 @@ class PreferencesDialog(Ui_Options):
     def accept(self):
         self.recopilate_options()
         options_to_rcparams(self.options)
+        save_options(self.mode, self.options)
         self.parent.accept()
 
     def cancel(self):
         self.parent.close()
-        
+
     def set_mode1(self):
         self.mode = "1"
         self.set_mode()
@@ -78,8 +80,8 @@ class PreferencesDialog(Ui_Options):
     def recopilate_options(self):
         if (self.mode == "1") or (self.mode == "2"):
             return
-        self.options["xtick.direction"] = self.xtickcombo.currentText()
-        self.options["ytick.direction"] = self.ytickcombo.currentText()
+        self.options["xtick.direction"] = str(self.xtickcombo.currentText())
+        self.options["ytick.direction"] = str(self.ytickcombo.currentText())
         self.options["xtick.top"] = self.topcheck.isChecked()
         self.options["ytick.right"] = self.leftcheck.isChecked()
         self.options["lines.scale_dashes"] = self.scaledash.isChecked()
@@ -187,3 +189,50 @@ def options_to_rcparams(options):
         if option in special_words:
             continue
         matplotlib.rcParams[option] = options[option]
+
+def save_options(mode, options):
+    """
+    Exports the options and mode to a file to be read later.
+    mode: string - 1, 2 or custom
+    options: dict with the options to be saved
+    """
+    cwd = path.dirname(path.abspath(__file__))
+    options_file_path = cwd + "/preferences"
+    options_file = open(options_file_path, "w")
+    # Write the mode at the beggining of the file
+    options_file.write(mode+"\n")
+    if mode == "custom":
+        json.dump(options, options_file)
+    options_file.close()
+
+def load_options():
+    """
+    Retruns the mode and options saved on the preferences file
+    """
+    cwd = path.dirname(path.abspath(__file__))
+    options_file_path = cwd + "/preferences"
+
+    if not path.isfile(options_file_path):
+        return default_options()
+
+    options_file = open(options_file_path)
+    mode = next(options_file).strip()
+    if mode == "1":
+        return mode, get_options_matplotlib1()
+    elif mode == "2":
+        return mode, get_options_matplotlib2()
+    elif mode == "custom":
+        try:
+            return mode, json.loads(next(options_file))
+        except ValueError:
+            return default_options()
+    else:
+        raise(KeyError("Unknow mode {}".format(mode)))
+
+def default_options():
+    mode = matplotlib.__version__[0]
+    if mode == "1":
+        options = get_options_matplotlib1()
+    elif mode == "2":
+        options = get_options_matplotlib2()
+    return mode, options
