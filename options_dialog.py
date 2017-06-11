@@ -1,6 +1,6 @@
 from ui.preferences_dialog import Ui_Options
 import matplotlib
-from os import path
+from os import path, makedirs
 import json
 from PyQt4 import QtGui
 
@@ -196,8 +196,10 @@ def save_options(mode, options):
     mode: string - 1, 2 or custom
     options: dict with the options to be saved
     """
-    cwd = path.dirname(path.abspath(__file__))
-    options_file_path = cwd + "/preferences"
+    options_file_path = path.expanduser("~/.plotter2/preferences")
+    options_dir_path = path.expanduser("~/.plotter2")
+    if not path.isdir(options_dir_path):
+        makedirs(options_dir_path)
     options_file = open(options_file_path, "w")
     # Write the mode at the beggining of the file
     options_file.write(mode+"\n")
@@ -209,8 +211,7 @@ def load_options():
     """
     Retruns the mode and options saved on the preferences file
     """
-    cwd = path.dirname(path.abspath(__file__))
-    options_file_path = cwd + "/preferences"
+    options_file_path = path.expanduser("~/.plotter2/preferences")
 
     if not path.isfile(options_file_path):
         return default_options()
