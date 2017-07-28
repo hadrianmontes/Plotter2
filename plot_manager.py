@@ -204,6 +204,8 @@ class Plot_Manager():
                 self.load_axis(f,index)
             if l.startswith("Plot"):
                 self.load_plot(index,f)
+            elif l.startswith("Errorbar_Plot"):
+                self.load_errorbar(index, f)
         return index
 
     def load_plot(self, index, filebuffer):
@@ -223,6 +225,24 @@ class Plot_Manager():
             else:
                 path=l[len(option)+1:]
         self.parent.plot_file(path,index,**options)
+
+    def load_errorbar(self, index, filebuffer):
+        path=""
+        string=None
+        options=dict()
+        for l in filebuffer:
+            l=l.strip()
+            if l=="":
+                continue
+            elif l=="End Plot":
+                break
+            option=l.split()[0].lower()
+            if option!="path":
+                value=l[len(option)+1:]
+                options[option]=value
+            else:
+                path=l[len(option)+1:]
+        self.parent.errorbar_file(path,index,**options)
 
     def load_axis(self,filebuffer,index):
         xlabel=""
