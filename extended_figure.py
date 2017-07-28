@@ -117,9 +117,9 @@ class Extended_Figure(plt.Figure):
             plot_label=kwargs.pop("plot_label")
         if index in self.axes_dict:
             plot=self.axes_dict[index].errorbar(*args,**kwargs)[0]
-            self.manager.add_errorbar(index, plot, kwargs, path=plot_label,
-                                      xcol=xcol, ycol=ycol, yerrcol=yerrcol,
-                                      string=string)
+            self.manager.add_plot(index, plot, kwargs, path=plot_label,
+                                  xcol=xcol, ycol=ycol, yerrcol=yerrcol,
+                                  string=string, errorbar=True)
         else:
             raise KeyError("This value for the axis is not defined")
             return
@@ -173,10 +173,10 @@ class Extended_Figure(plt.Figure):
             kwargs["plot_label"]=filename
         kwargs["xcol"]=int(xcol)
         kwargs["ycol"]=int(ycol)
-        kwargs["ycol"]=int(yerrcol)
-        x,y=read_file_errorbar(filename,int(xcol),int(ycol), int(yerrcol))
+        kwargs["yerrcol"]=int(yerrcol)
+        x,y, yerr=read_file_errorbar(filename,int(xcol),int(ycol), int(yerrcol))
         # Make a copy to avoid nasty changes in plots
-        self.errorbar(index,x,y,**kwargs)
+        self.errorbar(index,x,y,yerr=yerr,**kwargs)
         return
 
     def plot_file(self,filename,index,xcol=0,ycol=1,**kwargs):
@@ -396,4 +396,4 @@ def read_file_errorbar(filename, xcol=0, ycol=1, yerrcol=2):
                 yerr.append(yerrval)
             except:
                 pass
-    return x,y
+    return x,y, yerr
