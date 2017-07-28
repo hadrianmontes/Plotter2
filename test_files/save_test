@@ -1,0 +1,33 @@
+Template:
+	1	2
+	3	4
+End Template
+Index: 2
+xlimit -0.1162894865 2.5774423565
+ylimit -0.071945 1.510845
+xlabel 
+ylabel 
+label_visible True
+End Axis
+	Plot: 0
+		Path test_files/test_1.dat
+		string Unnamed plot 0
+		xcol 0
+		ycol 1
+		color #1f77b4
+End Plot
+Index: 1
+xlimit -0.1162894865 2.5774423565
+ylimit -1.709942 3.691058
+xlabel 
+ylabel 
+label_visible True
+End Axis
+	Errorbar_Plot: 1
+		Path test_files/test_1.dat
+		string Unnamed plot 1
+		xcol 0
+		ycol 1
+		yerrcol 0
+		color #1f77b4
+End Plot
