@@ -20,6 +20,16 @@ class Test_extended_figure(unittest.TestCase):
         self.fig.errorbar_file("test_files/test_1.dat", 1,
                                xcol=0, ycol=1, yerrcol=1)
 
+    def test_save(self):
+        self.fig.plot_file("test_files/test_1.dat", 2, xcol=0, ycol=1)
+        self.fig.errorbar_file("test_files/test_1.dat", 1,
+                               xcol=0, ycol=1, yerrcol=1)
+        self.fig.save("test_files/save_test")
+        self.fig.savefig("test_files/saved.png")
+
+    def test_load(self):
+        self.fig.load("test_files/save_test")
+        self.fig.savefig("test_files/loaded.png")
 
     def test_show(self):
         self.fig.show()
