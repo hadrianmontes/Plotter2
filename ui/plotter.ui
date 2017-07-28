@@ -8,7 +8,7 @@
     <x>0</x>
     <y>0</y>
     <width>1106</width>
-    <height>737</height>
+    <height>653</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -121,23 +121,6 @@
       </item>
      </layout>
     </item>
-    <item row="16" column="0" rowspan="5" colspan="2">
-     <layout class="QGridLayout" name="layout_4">
-      <item row="0" column="0">
-       <widget class="QTableWidget" name="plot_table">
-        <property name="maximumSize">
-         <size>
-          <width>16777215</width>
-          <height>120</height>
-         </size>
-        </property>
-        <property name="focusPolicy">
-         <enum>Qt::NoFocus</enum>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </item>
     <item row="1" column="0" rowspan="15">
      <layout class="QGridLayout" name="layout_2">
       <item row="0" column="0">
@@ -155,7 +138,7 @@
          </size>
         </property>
         <property name="currentIndex">
-         <number>0</number>
+         <number>2</number>
         </property>
         <widget class="QWidget" name="figure_tab">
          <attribute name="title">
@@ -1030,6 +1013,21 @@ color for marker</string>
               </item>
              </widget>
             </item>
+            <item row="5" column="0">
+             <widget class="QCheckBox" name="boxerrorbar">
+              <property name="text">
+               <string>Y errorbar
+Column</string>
+              </property>
+             </widget>
+            </item>
+            <item row="5" column="1">
+             <widget class="QSpinBox" name="yerrorColumn">
+              <property name="maximum">
+               <number>999</number>
+              </property>
+             </widget>
+            </item>
            </layout>
           </item>
           <item row="1" column="0">
@@ -1062,6 +1060,23 @@ color for marker</string>
           </item>
          </layout>
         </widget>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item row="16" column="0" rowspan="5" colspan="2">
+     <layout class="QGridLayout" name="layout_4">
+      <item row="0" column="0">
+       <widget class="QTableWidget" name="plot_table">
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>120</height>
+         </size>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::NoFocus</enum>
+        </property>
        </widget>
       </item>
      </layout>
