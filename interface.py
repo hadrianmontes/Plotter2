@@ -106,11 +106,12 @@ class Plotter2(Ui_MainWindow):
         self.right_pos_radio.pressed.connect(self.right_pressed)
 
         ##############################
-        ##############################
         # Setup Buttons for plotting #
+        ##############################
 
         self.file_path_open.clicked.connect(self.select_path)
         self.bocDiffColor.stateChanged.connect(self.marker_color_policy)
+        self.boxerrorbar.stateChanged.connect(self._activate_deactivate_yerr)
         self.plot_but.clicked.connect(self.plot_file)
 
         ##########################
@@ -440,7 +441,14 @@ class Plotter2(Ui_MainWindow):
         ycolumn=self.y_column_index.value()
         path=str(self.file_path_box.text())
         index=self.selected
-        self.figure.plot_file(path,index,xcol=xcolumn,ycol=ycolumn,**plot_parameters)
+        if not self.boxerrorbar.isChecked():
+            self.figure.plot_file(path,index,xcol=xcolumn,
+                                  ycol=ycolumn,**plot_parameters)
+        else:
+            yerrcolumn = self.yerrorColumn.value()
+            self.figure.errorbar_file(path,index,xcol=xcolumn,
+                                      ycol=ycolumn, yerrcol=yerrcolumn,
+                                      **plot_parameters)
         self.update_legend()
         self.canvas.draw()
         self.update_limits_indicators(self.selected)
@@ -566,6 +574,13 @@ class Plotter2(Ui_MainWindow):
         self.comboEdgeColor.setEnabled(state)
         self.bocDiffColor.setEnabled(state)
 
+        ####################
+        # Disable errorbar #
+        ####################
+
+        self.boxerrorbar.setEnabled(state)
+        self._activate_deactivate_yerr(state)
+
         #######################
         # Disable button plot #
         #######################
@@ -583,6 +598,12 @@ class Plotter2(Ui_MainWindow):
         ###################################################
 
         self.updateUndoRedoButtons()
+
+    def _activate_deactivate_yerr(self, state=True):
+        # State is the global state of the representation
+        # if absent is supossed to be activated
+        state2 = self.boxerrorbar.isChecked()
+        self.yerrorColumn.setEnabled(state * state2)
 
     def disable_join_buttons(self):
         status_y=self.figure.template.yjoinable
