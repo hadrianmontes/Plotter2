@@ -18,7 +18,9 @@ class Extended_Figure(plt.Figure):
         self.manager=Plot_Manager(self)
 
     def blank_figure(self):
-        # Creates a blank figure
+        """
+        Creates a blank figure
+        """
         self.define_template(matrix=[[1]])
         ax=self.axes_dict[1]
         ax.set_xticks([])
@@ -29,7 +31,7 @@ class Extended_Figure(plt.Figure):
         '''
         Defines the number of rows and colums
         for the subplots. It is possible also to define a custom grid
-        that will include the columspans
+        that will include the columspans.
         '''
         self.template=axes_template(**kwargs)
         self.ncol=self.template.ncol
@@ -50,6 +52,19 @@ class Extended_Figure(plt.Figure):
         self.template.generate_preview()
 
     def plot(self,index,*args,**kwargs):
+        """
+        PLots the data in a given subplot.
+
+        Parameters
+        ----------
+        index: int
+            Index of the subplot where the data will be plotted
+        *args: Any argument for matplotlib.axis.plot
+        **kwargs: Any keywordargument for matplotlib.axis.plot.
+            Moreover, the arguents xcol and ycol are accepted to set
+            in the plot manager from wich column was the x and y data
+            read.
+        """
         xcol=None
         ycol=None
         string=None
@@ -64,12 +79,67 @@ class Extended_Figure(plt.Figure):
             plot_label=kwargs.pop("plot_label")
         if index in self.axes_dict:
             plot=self.axes_dict[index].plot(*args,**kwargs)[0]
-            self.manager.add_plot(index,plot,kwargs,path=plot_label,xcol=xcol,ycol=ycol,string=string)
+            self.manager.add_plot(index, plot, kwargs, path=plot_label,
+                                  xcol=xcol, ycol=ycol, string=string)
         else:
-            print("This value for the axis is not defined")
+            raise KeyError("This value for the axis is not defined")
             return
 
+
+    def errorbar(self,index,*args,**kwargs):
+        """
+        PLots the data in a given subplot.
+
+        Parameters
+        ----------
+        index: int
+            Index of the subplot where the data will be plotted
+        *args: Any argument for matplotlib.axis.plot
+        **kwargs: Any keywordargument for matplotlib.axis.plot.
+            Moreover, the arguents xcol and ycol are accepted to set
+            in the plot manager from wich column was the x and y data
+            read.
+        """
+        xcol=None
+        ycol=None
+        yerrcol=None
+        string=None
+        if "xcol" in kwargs:
+            xcol=kwargs.pop("xcol")
+        if "ycol" in kwargs:
+            ycol=kwargs.pop("ycol")
+        if "yerrcol" in kwargs:
+            yerrcol=kwargs.pop("yerrcol")
+        if "string" in kwargs:
+            string=kwargs.pop("string")
+        plot_label=""
+        if "plot_label" in kwargs:
+            plot_label=kwargs.pop("plot_label")
+        if index in self.axes_dict:
+            plot=self.axes_dict[index].errorbar(*args,**kwargs)[0]
+            self.manager.add_errorbar(index, plot, kwargs, path=plot_label,
+                                      xcol=xcol, ycol=ycol, yerrcol=yerrcol,
+                                      string=string)
+        else:
+            raise KeyError("This value for the axis is not defined")
+            return
+
+
     def hist(self,index,*args,**kwargs):
+        """
+        Histograms the data in a given subplot.
+
+        Parameters
+        ----------
+        index: int
+            Index of the subplot where the data will be plotted
+        *args: Any argument for matplotlib.axis.hist
+        **kwargs: Any keywordargument for matplotlib.axis.hist.
+            Moreover, the arguents xcol and ycol are accepted to set
+            in the plot manager from wich column was the x and y data
+            read.
+        """
+
         xcol=None
         ycol=None
         if "xcol" in kwargs:
@@ -85,7 +155,7 @@ class Extended_Figure(plt.Figure):
                     kwargs["width"]=0.8*min(lens)
             self.axes_dict[index].bar(*args,**kwargs)
         else:
-            print("This value for the axis is not defined")
+            raise KeyError("This value for the axis is not defined")
             return
 
     def hist_file(self,filename,index,xcol=0,ycol=1,**kwargs):
@@ -95,6 +165,19 @@ class Extended_Figure(plt.Figure):
         kwargs["ycol"]=ycol
         x,y=read_file(filename,xcol,ycol)
         self.hist(index,x,y,**kwargs)
+
+    def errorbar_file(self, filename, index, xcol=0,
+                      ycol=1, yerrcol=2, **kwargs):
+
+        if "plot_label" not in kwargs:
+            kwargs["plot_label"]=filename
+        kwargs["xcol"]=int(xcol)
+        kwargs["ycol"]=int(ycol)
+        kwargs["ycol"]=int(yerrcol)
+        x,y=read_file_errorbar(filename,int(xcol),int(ycol), int(yerrcol))
+        # Make a copy to avoid nasty changes in plots
+        self.errorbar(index,x,y,**kwargs)
+        return
 
     def plot_file(self,filename,index,xcol=0,ycol=1,**kwargs):
         if "plot_label" not in kwargs:
@@ -289,6 +372,28 @@ def read_file(filename,xcol=0,ycol=1):
                 yval=float(l.split()[ycol])
                 x.append(xval)
                 y.append(yval)
+            except:
+                pass
+    return x,y
+
+def read_file_errorbar(filename, xcol=0, ycol=1, yerrcol=2):
+    f=open(filename,"Ur")
+    x=[]
+    y=[]
+    yerr=[]
+    for l in f:
+        if l.startswith("#"):
+            pass
+        elif l.startswith(r"@"):
+            pass
+        else:
+            try:
+                xval=float(l.split()[xcol])
+                yval=float(l.split()[ycol])
+                yerrval=float(l.split()[yerrcol])
+                x.append(xval)
+                y.append(yval)
+                yerr.append(yerrval)
             except:
                 pass
     return x,y
