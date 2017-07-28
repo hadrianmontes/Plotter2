@@ -12,9 +12,13 @@ class Plot_Manager():
         self.unchanges=[]
         self.indexes=[]
 
-    def add_plot(self,index,plot,properties,string=None,path=None,xcol=None,ycol=None):
+    def add_plot(self, index, plot, properties, string=None,
+                 errorbar=False,path=None, xcol=None, ycol=None, yerrcol=None):
+
+        # Add a deafult name
         if string is None:
             string="Unnamed plot "+str(self.uid)
+        # If name is repeated, add an integer tot the name
         elif string in self.uid_by_name:
             copy=2
             while string+"("+str(copy)+")" in self.uid_by_name:
@@ -22,16 +26,29 @@ class Plot_Manager():
             else:
                 string=string+"("+str(copy)+")"
 
+        # Remove information about the yerr data if present
+        if "yerr" in properties:
+            properties.pop("yerr")
+
         # save the color in the porperties
         # wether it was lready saved or not
         properties["color"]=plot.get_color()
 
-        self.plot_by_uid[self.uid]={"string":string,"plot":plot,"deleted":False,"index":index,"properties":properties}
+        self.plot_by_uid[self.uid]={"string":string,
+                                    "plot":plot,
+                                    "deleted":False,
+                                    "index":index,
+                                    "errorbar": errorbar,
+                                    "properties":properties}
 
         # Save info about columns if existing
         if xcol is not None and ycol is not None:
             self.plot_by_uid[self.uid]["xcol"]=xcol
             self.plot_by_uid[self.uid]["ycol"]=ycol
+
+        # Check if there is information about the error column
+        if yerrcol is not None:
+            self.plot_by_uid[self.uid]["yerrcol"]=yerrcol
 
         if index not in self.indexes:
             self.indexes.append(index)
@@ -139,7 +156,11 @@ class Plot_Manager():
             return
         if not plot["plot"].get_visible():
             return
-        filebuffer.write("\tPlot: "+str(uid)+"\n")
+
+        if not plot["errorbar"]:
+            filebuffer.write("\tPlot: "+str(uid)+"\n")
+        else:
+            filebuffer.write("\tErrorbar_Plot: "+str(uid)+"\n")
 
         # Write the path
         path=str(plot["path"])
@@ -153,6 +174,8 @@ class Plot_Manager():
         if "xcol" in plot:
             filebuffer.write("\t\txcol "+str(plot["xcol"])+"\n")
             filebuffer.write("\t\tycol "+str(plot["ycol"])+"\n")
+        if "yerrcol" in plot:
+            filebuffer.write("\t\tyerrcol "+str(plot["yerrcol"])+"\n")
 
 
         # Write their properties
