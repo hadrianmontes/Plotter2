@@ -1,4 +1,4 @@
-#Plotter2
+# Plotter2
 
 Plotter 2 is a remodeled version of the program plotter. It is intended to manage plots 
 hat can be confiusing to do in a script in an easy way. It features plotting differnt subplots
@@ -26,5 +26,9 @@ The dependecies necesary are: python2.7, matplotlib and pyqt4. There are some di
     sudo dpkg -i plotter2-version.deb
     sudo apt-get -f install
 With this 2 commands all the dependencies will be solved.
+
+In order to use al the features, matplotlib 2.x must be installed, if using an older version it might be updated running:
+
+    sudo pip install --upgrade matplotlib
 
 Both the source code and the deb package are avaliable in the releases section (https://github.com/hadrianmontes/Plotter2/releases)
