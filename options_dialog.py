@@ -3,6 +3,7 @@ import matplotlib
 from os import path, makedirs
 import json
 from PyQt4 import QtGui
+matplotlib.rcParams['errorbar.capsize'] = 3
 
 class PreferencesDialog(Ui_Options):
     def __init__(self,*args,**kwargs):
