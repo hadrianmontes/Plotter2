@@ -138,7 +138,7 @@
          </size>
         </property>
         <property name="currentIndex">
-         <number>0</number>
+         <number>3</number>
         </property>
         <widget class="QWidget" name="figure_tab">
          <attribute name="title">
@@ -1057,6 +1057,16 @@ Column</string>
              </item>
             </layout>
            </widget>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="function_tab">
+         <attribute name="title">
+          <string>Add Function</string>
+         </attribute>
+         <layout class="QGridLayout" name="gridLayout_18">
+          <item row="0" column="0">
+           <widget class="QWidget" name="widget" native="true"/>
           </item>
          </layout>
         </widget>
