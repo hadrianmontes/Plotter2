@@ -4,15 +4,40 @@ from plot_manager import Plot_Manager
 
 
 def extended_figure(*args, **kwargs):
+    """
+    Creates an Extended_Figure object.
+
+    Parameters
+    ----------
+    *args: *list
+        Any argument accepted by matplotlib.pyplot.figure
+    **kwargs: **dict
+        Any keyword argument accepted by matplotlib.pyplot.figure
+
+    Returns
+    -------
+    fig: Extended_Figure
+        An initilized, without  axis, Extended_Figure
+
+    """
+
     kwargs["FigureClass"] = Extended_Figure
     return plt.figure(*args, **kwargs)
 
 
 class Extended_Figure(plt.Figure):
-    '''
+    """
     Creates a figure to plot data in multiple axes
-    comming from files or from objects with the correct format
-    '''
+    comming from files or from objects with the correct format.
+
+    Parameters
+    ----------
+    *args: *list
+        Any argument accepted by matplotlib.pyplot.Figure
+    **kwargs: **dict
+        Any keyword argument accepted by matplotlib.pyplot.Figure
+
+    """
 
     def __init__(self, *args, **kwargs):
         super(Extended_Figure, self).__init__(*args, **kwargs)
@@ -22,7 +47,7 @@ class Extended_Figure(plt.Figure):
 
     def blank_figure(self):
         """
-        Creates a blank figure
+        Creates a blank figure without visible axis.
         """
         self.define_template(matrix=[[1]])
         ax = self.axes_dict[1]
@@ -31,11 +56,22 @@ class Extended_Figure(plt.Figure):
         self.tight_layout()
 
     def define_template(self, **kwargs):
-        '''
-        Defines the number of rows and colums
-        for the subplots. It is possible also to define a custom grid
-        that will include the columspans.
-        '''
+        """
+        Defines the arrangement of subplots in the Extended_Figure.
+
+        It is possible to create the subplots by choosing the number
+        of rows and columns of the distribution or choosing a more
+        customized one by passing an array with the template. For more
+        information see axes_template.axes_template().
+
+        Parameters
+        ----------
+        **kwargs: keyword arguments
+            Any keyword argument accepted by
+            axes_template.axes_template().
+
+        """
+
         self.template = axes_template(**kwargs)
         self.ncol = self.template.ncol
         self.nrow = self.template.nrow
@@ -67,7 +103,9 @@ class Extended_Figure(plt.Figure):
             Moreover, the arguents xcol and ycol are accepted to set
             in the plot manager from wich column was the x and y data
             read.
+
         """
+
         xcol = None
         ycol = None
         string = None
@@ -107,7 +145,9 @@ class Extended_Figure(plt.Figure):
             Moreover, the arguents xcol and ycol are accepted to set
             in the plot manager from wich column was the x and y data
             read.
+
         """
+
         xcol = None
         ycol = None
         yerrcol = None
@@ -152,7 +192,9 @@ class Extended_Figure(plt.Figure):
             Moreover, the arguents xcol and ycol are accepted to set
             in the plot manager from wich column was the x and y data
             read.
+
         """
+
 
         xcol = None
         ycol = None
@@ -176,6 +218,25 @@ class Extended_Figure(plt.Figure):
             return
 
     def hist_file(self, filename, index, xcol=0, ycol=1, **kwargs):
+        """
+        Histograms the content of a file.
+
+        Histograms 2 columns of a file in one of the subplots.
+
+        Parameters
+        ----------
+        filename: str
+            Filename of the file to represent
+        index: int
+            Index of the subplot where the file will be represented.
+        xcol: int, optional
+            Column index of the file to be used as data axis.
+            Deafult 0.
+        **kwargs: keyword args
+            Any keyword argument accepted by matplotlib.Axes.hist()
+
+        """
+
         if "plot_label" not in kwargs:
             kwargs["plot_label"] = filename
         kwargs["xcol"] = xcol
@@ -191,6 +252,32 @@ class Extended_Figure(plt.Figure):
                       yerrcol=2,
                       **kwargs):
 
+        """
+        Represents the content of a file with errorbars
+
+        Plots the content 2 columns of a file using a third one as
+        uncertainty (error) of the data to add an errorbar.
+
+        Parameters
+        ----------
+        filename: str
+            Filename of the file to represent
+        index: int
+            Index of the subplot where the file will be represented.
+        xcol: int, optional
+            Column index of the file to be used as the data of the x
+            axis. Deafult 0.
+        ycol: int, optional
+            Column index of the file to be used as the data of the y
+            axis. Deafult 1.
+        yerrcol: int, optional
+            Column index of the file to be used as the uncertainty
+            (error) of the y-axis. Deafult 2.
+        **kwargs: keyword args
+            Any keyword argument accepted by matplotlib.Axes.errorbar()
+
+        """
+
         if "plot_label" not in kwargs:
             kwargs["plot_label"] = filename
         kwargs["xcol"] = int(xcol)
@@ -203,6 +290,28 @@ class Extended_Figure(plt.Figure):
         return
 
     def plot_file(self, filename, index, xcol=0, ycol=1, **kwargs):
+        """
+        Represents the content of a file.
+
+        Plots the content of 2 columns of a file.
+
+        Parameters
+        ----------
+        filename: str
+            Filename of the file to represent
+        index: int
+            Index of the subplot where the file will be represented.
+        xcol: int, optional
+            Column index of the file to be used as the data of the x
+            axis. Deafult 0.
+        ycol: int, optional
+            Column index of the file to be used as the data of the y
+            axis. Deafult 1.
+        **kwargs: keyword args
+            Any keyword argument accepted by matplotlib.Axes.plot()
+
+        """
+
         if "plot_label" not in kwargs:
             kwargs["plot_label"] = filename
         kwargs["xcol"] = int(xcol)
@@ -213,18 +322,46 @@ class Extended_Figure(plt.Figure):
         return
 
     def plot_class(self, objeto, index, **kwargs):
+        """
+        Plots the contnt of an arbitrary class
+        """
+        raise NotImplemented("plot_class not fully implemented")
         x = objeto.data[0]
         y = objeto.data[1]
         self.plot(index, x, y, **kwargs)
 
     def update_legend(self, index, state):
+        """
+        Shows or hides the legend of a subplot.
+
+        Parameters
+        ----------
+        index: int
+            Index of the subplot.
+        state: bool
+            If True the legend will be visible. If False, it will
+            become invisible.
+
+        """
+
         legend = self.axes_dict[index]
         legend.set_visible(state)
 
     def join_xy(self):
+        """
+        Joins the x and y axis of all the subplots.
+
+        Raises
+        ------
+        AttributeError
+            If the geometry of the template does not allow this kind
+            of joining.
+
+        """
+
         if not (self.template.xjoinable and self.template.yjoinable):
-            print("The tempalte does not allow this kind of joining" +
-                  " try with only one kind of axis")
+            raise AttributeError(("The tempalte does not allow this kind of"
+                                  "joinining try with only one kind of axis"))
             return
         else:
             self.join_x()
@@ -233,10 +370,19 @@ class Extended_Figure(plt.Figure):
     def join_x(self):
         """
         Joins and share the x axis of the subplots 
-        of each column
+        of each column.
+
+        Raises
+        ------
+        AttributeError
+            If the geometry of the template does not allow this kind
+            of joining.
+
         """
+
         if not self.template.xjoinable:
-            print("This configuration does not support x axis joinability")
+            raise AttributeError(("The current template does not support x"
+                                  " axis joinability"))
             return
         matrix = self.template.matrix
 
@@ -263,9 +409,9 @@ class Extended_Figure(plt.Figure):
         for column in range(self.ncol):
             self.axes_dict[matrix[-1][column]].set_xlim((minimuns[column],
                                                          maximuns[column]))
-        self.fix_x_ticks()
+        self._fix_x_ticks()
 
-    def fix_x_ticks(self):
+    def _fix_x_ticks(self):
         # Elimnate the xticks of all the subplots that are not
         # at the bottom. It also pops the top element of each
         # set of ticks if they are not in the top subplot
@@ -291,11 +437,20 @@ class Extended_Figure(plt.Figure):
 
     def join_y(self):
         """
-        Joins and share the y axis of the subplots
-        of each column
+        Joins and share the x axis of the subplots 
+        of each column.
+
+        Raises
+        ------
+        AttributeError
+            If the geometry of the template does not allow this kind
+            of joining.
+
         """
+
         if not self.template.yjoinable:
-            print("This configuration does not support y axis joinability")
+            raise AttributeError(("The current template does not support y"
+                                  " axis joinability"))
             return
         matrix = self.template.matrix
 
@@ -322,9 +477,9 @@ class Extended_Figure(plt.Figure):
         for column in range(self.nrow):
             self.axes_dict[matrix[column][-1]].set_ylim((minimuns[column],
                                                          maximuns[column]))
-        self.fix_y_ticks()
+        self._fix_y_ticks()
 
-    def fix_y_ticks(self):
+    def _fix_y_ticks(self):
         # Elimnate the xticks of all the subplots that are not
         # at the bottom. It also pops the top element of each
         # set of ticks if they are not in the top subplot
@@ -349,21 +504,34 @@ class Extended_Figure(plt.Figure):
         self.subplots_adjust(wspace=0)
 
     def undo(self):
+        """
+        Undos last plot.
+        """
         self.manager.undo()
 
     def redo(self):
+        """
+        Redos last undo.
+        """
         self.manager.redo()
 
     def canUndo(self):
+        """
+        Returns wheter an undo action is possible.
+        """
         return self.manager.canUndo()
 
     def canRedo(self):
+        """
+        Returns wheter a redo action is possible.
+        """
         return self.manager.canRedo()
 
     def reset_ticks(self):
         """
         Makes visisible all the ticks, this can be used if there are
-        hidden ticks that should ve visible
+        hidden ticks that should ve visible. FOr example, after
+        hidding some ticks for joining axis.
         """
         matrix = self.template.matrix
         for column in range(self.ncol):
@@ -383,13 +551,45 @@ class Extended_Figure(plt.Figure):
     ###########################
 
     def save(self, path):
+        """
+        Saves the Extended_Figure in a plain text format that can be
+        relaoded later.
+
+        """
+
         self.manager.save(path)
 
     def load(self, path):
+        """
+        Reloads a previously saved Extended_Figure to continue its editing.
+
+        """
+
         return self.manager.load(path)
 
 
 def read_file(filename, xcol=0, ycol=1):
+    """
+    Reads 2 columns of data from a file.
+
+    Parameters
+    ----------
+    filename: str
+        Filename of the file to read.
+    xcol: int, optional
+        Index of the olumn to be read as x data. Default 0.
+    ycol: int, optional
+        Index of the olumn to be read as y data. Default 1.
+
+    Returns
+    -------
+    x: list(float)
+        List with the x data values.
+    y: list(float)
+        List with the y data values.
+
+    """
+
     f = open(filename, "Ur")
     x = []
     y = []
@@ -410,6 +610,31 @@ def read_file(filename, xcol=0, ycol=1):
 
 
 def read_file_errorbar(filename, xcol=0, ycol=1, yerrcol=2):
+    """
+    Reads 3 columns of data from a file.
+
+    Parameters
+    ----------
+    filename: str
+        Filename of the file to read.
+    xcol: int, optional
+        Index of the olumn to be read as x data. Default 0.
+    ycol: int, optional
+        Index of the olumn to be read as y data. Default 1.
+    yerrcol: int, optional
+        Index of the olumn to be read as y error data. Default 2.
+
+    Returns
+    -------
+    x: list(float)
+        List with the x data values.
+    y: list(float)
+        List with the y data values.
+    yerr: list(float)
+        List with the y error data values.
+
+    """
+
     f = open(filename, "Ur")
     x = []
     y = []
